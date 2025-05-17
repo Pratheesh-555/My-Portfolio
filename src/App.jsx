@@ -3,14 +3,10 @@ import { motion } from 'framer-motion';
 
 export default function AppleInspiredPortfolio() {
   const [darkMode, setDarkMode] = useState(true);
-  const [scrollPosition, setScrollPosition] = useState(0);
   const [activeSection, setActiveSection] = useState("home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => {
-      setScrollPosition(window.scrollY);
-      
       // Determine active section
       const sections = ["home", "skills", "projects", "achievements", "contact"];
       const currentSection = sections.find(section => {
