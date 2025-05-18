@@ -1,24 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useAnimation, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useScroll, useMotionValue, useSpring } from 'framer-motion';
 
-export default function UltraModernPortfolio() {
+export default function AppleInspiredPortfolio() {
   // State hooks
   const [darkMode, setDarkMode] = useState(true);
-  const [scrollPosition, setScrollPosition] = useState(0);
   const [activeSection, setActiveSection] = useState("home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cursorVariant, setCursorVariant] = useState("default");
   
   // Refs
-  const mainRef = useRef(null);
   const cursorRef = useRef(null);
   const buttonRefs = useRef([]);
+  
   // Animation hooks and responsive setup
   const { scrollY } = useScroll();
   const [isMobile, setIsMobile] = useState(false);
   const cursorX = useSpring(useMotionValue(0), { stiffness: 500, damping: 50 });
   const cursorY = useSpring(useMotionValue(0), { stiffness: 500, damping: 50 });
   const scrollProgress = useSpring(0);
+  
   // Update scroll progress
   useEffect(() => {
     const unsubscribe = scrollY.on("change", (latest) => {
@@ -38,10 +38,10 @@ export default function UltraModernPortfolio() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Enhanced animations
-  const springConfig = { stiffness: 100, damping: 15, mass: 0.5 };
-  const buttonSpring = { type: "spring", ...springConfig };
-  const cardSpring = { type: "spring", stiffness: 150, damping: 20 };
+  // Enhanced animations with Apple-like spring physics
+  const appleSpringConfig = { stiffness: 300, damping: 30, mass: 0.8 };
+  const buttonSpring = { type: "spring", ...appleSpringConfig };
+  const cardSpring = { type: "spring", stiffness: 250, damping: 25 };
 
   // Responsive animations based on device
   const mobileAnimations = {
@@ -49,7 +49,7 @@ export default function UltraModernPortfolio() {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.4, ease: "easeOut" }
+      transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }
     }
   };
 
@@ -58,25 +58,26 @@ export default function UltraModernPortfolio() {
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+      transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }
     }
   };
 
   const fadeInUp = isMobile ? mobileAnimations : desktopAnimations;
 
-  // Enhanced stagger container with better performance
+  // Enhanced stagger container with Apple-like timing
   const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: isMobile ? 0.05 : 0.1,
-        delayChildren: isMobile ? 0.1 : 0.2
+        staggerChildren: isMobile ? 0.05 : 0.08,
+        delayChildren: isMobile ? 0.1 : 0.15,
+        ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
 
-  // Improved card hover with better performance
+  // Improved card hover with Apple-like subtlety
   const cardHover = {
     rest: { 
       scale: 1,
@@ -84,10 +85,11 @@ export default function UltraModernPortfolio() {
     },
     hover: { 
       scale: isMobile ? 1.01 : 1.02,
-      y: isMobile ? -5 : -10,
+      y: isMobile ? -3 : -5,
       transition: cardSpring
     }
   };
+  
   // Magnetic effect for buttons with useRef array
   const updateButtonRefs = (element, index) => {
     if (element && !buttonRefs.current[index]) {
@@ -101,8 +103,8 @@ export default function UltraModernPortfolio() {
     if (!button) return;
     
     const rect = button.getBoundingClientRect();
-    const x = (event.clientX - rect.left - rect.width / 2) * 0.2;
-    const y = (event.clientY - rect.top - rect.height / 2) * 0.2;
+    const x = (event.clientX - rect.left - rect.width / 2) * 0.15; // Reduced for subtlety
+    const y = (event.clientY - rect.top - rect.height / 2) * 0.15;
     
     button.style.transform = `translate(${x}px, ${y}px)`;
     setCursorVariant("button");
@@ -117,7 +119,7 @@ export default function UltraModernPortfolio() {
     setCursorVariant("default");
   };
 
-  // Enhanced cursor variants with better performance
+  // Enhanced cursor variants with Apple-like subtlety
   const cursorVariants = {
     default: {
       height: isMobile ? 24 : 32,
@@ -129,20 +131,20 @@ export default function UltraModernPortfolio() {
       transition: buttonSpring
     },
     text: {
-      height: isMobile ? 36 : 48,
-      width: isMobile ? 36 : 48,
+      height: isMobile ? 32 : 40,
+      width: isMobile ? 32 : 40,
       x: cursorX,
       y: cursorY,
-      backgroundColor: darkMode ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)",
+      backgroundColor: darkMode ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.15)",
       mixBlendMode: "difference",
       transition: buttonSpring
     },
     button: {
-      height: isMobile ? 48 : 64,
-      width: isMobile ? 48 : 64,
+      height: isMobile ? 42 : 56,
+      width: isMobile ? 42 : 56,
       x: cursorX,
       y: cursorY,
-      backgroundColor: darkMode ? "rgba(255, 255, 255, 0.3)" : "rgba(0, 0, 0, 0.3)",
+      backgroundColor: darkMode ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)",
       mixBlendMode: "difference",
       transition: buttonSpring
     }
@@ -201,19 +203,19 @@ export default function UltraModernPortfolio() {
   const projects = [
     {
       title: "Stress Analyzer",
-      description: "AI-powered stress analysis platform using facial recognition",
+      description: "AI-powered stress analysis platform using facial recognition technology to help users monitor and manage their emotional wellbeing.",
       tech: "React · Node.js · Express.js · AI",
       link: "#"
     },
     {
       title: "Mental Wellness Platform",
-      description: "AI-driven mental wellness support system",
+      description: "AI-driven mental wellness support system that provides personalized insights and guidance for better mental health management.",
       tech: "React · Node.js · AI APIs",
       link: "#"
     },
     {
       title: "Glacier Analysis",
-      description: "GLOF analysis using Landsat satellite data",
+      description: "GLOF analysis using Landsat satellite data to monitor glacial lakes and predict potential outburst floods for early warning systems.",
       tech: "Python · GIS · NDWI",
       link: "#"
     }
@@ -240,29 +242,29 @@ export default function UltraModernPortfolio() {
   };
 
   return (
-    <div className={`${darkMode ? 'bg-black text-white' : 'bg-white text-black'} min-h-screen font-sans relative overflow-hidden`}>
+    <div className={`${darkMode ? 'bg-black text-white' : 'bg-white text-black'} min-h-screen font-sans relative overflow-hidden antialiased`}>
       {/* Custom Cursor - Only show on non-touch devices */}
       {!isMobile && (
         <motion.div
-          className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-50"
+          className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-50 backdrop-blur-sm"
           variants={cursorVariants}
           animate={cursorVariant}
           ref={cursorRef}
         />
       )}
       
-      {/* Optimized Animated Background - Reduce particles on mobile */}
+      {/* Apple-inspired subtle particles */}
       <div className="absolute inset-0 overflow-hidden">
-        {Array.from({ length: isMobile ? 10 : 20 }).map((_, i) => (
+        {Array.from({ length: isMobile ? 8 : 15 }).map((_, i) => (
           <motion.div
             key={i}
-            className={`absolute w-2 h-2 rounded-full ${
-              darkMode ? 'bg-gray-700' : 'bg-gray-200'
+            className={`absolute w-1 h-1 rounded-full ${
+              darkMode ? 'bg-gray-700/30' : 'bg-gray-200/40'
             }`}
             initial={{
               x: Math.random() * window.innerWidth,
               y: Math.random() * window.innerHeight,
-              opacity: Math.random() * 0.3 + 0.2
+              opacity: Math.random() * 0.2 + 0.1 // More subtle opacity
             }}
             animate={{
               x: [
@@ -277,7 +279,7 @@ export default function UltraModernPortfolio() {
               ]
             }}
             transition={{
-              duration: isMobile ? Math.random() * 5 + 15 : Math.random() * 10 + 20,
+              duration: isMobile ? Math.random() * 8 + 20 : Math.random() * 15 + 30,
               repeat: Infinity,
               ease: "linear"
             }}
@@ -285,25 +287,26 @@ export default function UltraModernPortfolio() {
         ))}
       </div>
       
-      {/* Navigation with improved mobile experience */}
+      {/* Navigation with Apple-inspired design */}
       <motion.nav 
-        className={`fixed w-full z-50 ${darkMode ? 'bg-black/80' : 'bg-white/80'} backdrop-blur-xl`}
+        className={`fixed w-full z-50 ${darkMode ? 'bg-black/80' : 'bg-white/80'} backdrop-blur-2xl`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
       >
-        <div className="max-w-6xl mx-auto px-4 md:px-8">
+        <div className="max-w-6xl mx-auto px-6 md:px-8">
           <div className="flex justify-between items-center h-16 md:h-20">
             <motion.div 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`font-bold text-lg md:text-xl ${darkMode ? 'text-white' : 'text-black'}`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className={`font-medium text-lg md:text-xl ${darkMode ? 'text-white' : 'text-black'}`}
+              style={{ letterSpacing: '-0.02em' }} // Apple-like tight spacing
             >
-              portfolio.
+              pratheesh.
             </motion.div>
             
-            {/* Desktop Menu with improved animations */}
-            <div className="hidden md:flex space-x-6 lg:space-x-8">
+            {/* Desktop Menu with Apple-inspired spacing and transitions */}
+            <div className="hidden md:flex space-x-8 lg:space-x-10">
               {navItems.map((item, index) => (
                 <motion.button
                   key={index}
@@ -311,10 +314,11 @@ export default function UltraModernPortfolio() {
                   className={`text-sm lg:text-base font-medium transition duration-300 ${
                     activeSection === item.toLowerCase() 
                       ? darkMode ? 'text-white' : 'text-black' 
-                      : darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'
+                      : darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-black'
                   }`}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
+                  style={{ letterSpacing: '-0.01em' }} // Apple-like tight spacing
+                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileTap={{ scale: 0.98 }}
                   transition={buttonSpring}
                 >
                   {item}
@@ -324,35 +328,35 @@ export default function UltraModernPortfolio() {
             
             <div className="flex items-center space-x-4">
               <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 transition={buttonSpring}
                 onClick={() => setDarkMode(!darkMode)}
-                className={`rounded-full p-2 md:p-3 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}
+                className={`rounded-full p-2 md:p-3 ${darkMode ? 'bg-gray-800/70 text-white' : 'bg-gray-100/70 text-black'} backdrop-blur-lg`}
               >
                 {darkMode ? (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
                 ) : (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                   </svg>
                 )}
               </motion.button>
               
-              {/* Improved mobile menu button */}
+              {/* Apple-inspired mobile menu button */}
               <div className="md:hidden">
                 <motion.button
-                  whileTap={{ scale: 0.9 }}
+                  whileTap={{ scale: 0.95 }}
                   transition={buttonSpring}
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className={`text-gray-300 focus:outline-none p-2 rounded-lg ${
-                    darkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
-                  }`}
+                  className={`focus:outline-none p-2 rounded-lg ${
+                    darkMode ? 'hover:bg-gray-800/70' : 'hover:bg-gray-100/70'
+                  } backdrop-blur-lg`}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
                   </svg>
                 </motion.button>
               </div>
@@ -360,27 +364,28 @@ export default function UltraModernPortfolio() {
           </div>
         </div>
         
-        {/* Enhanced mobile menu with smooth animations */}
+        {/* Enhanced mobile menu with Apple-like transitions */}
         {isMenuOpen && (
           <motion.div 
             className={`md:hidden ${darkMode ? 'bg-black/95' : 'bg-white/95'} backdrop-blur-xl`}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <div className="px-4 py-4 space-y-2">
+            <div className="px-6 py-5 space-y-1">
               {navItems.map((item, index) => (
                 <motion.button
                   key={index}
                   onClick={() => scrollToSection(item.toLowerCase())}
                   className={`block w-full text-left py-3 px-4 rounded-xl ${
                     activeSection === item.toLowerCase()
-                      ? darkMode ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'
+                      ? darkMode ? 'bg-gray-800/80 text-white' : 'bg-gray-100/80 text-black'
                       : darkMode ? 'text-gray-300' : 'text-gray-700'
                   }`}
                   whileTap={{ scale: 0.98 }}
                   transition={buttonSpring}
+                  style={{ letterSpacing: '-0.01em' }} // Apple-like tight spacing
                 >
                   {item}
                 </motion.button>
@@ -388,9 +393,11 @@ export default function UltraModernPortfolio() {
             </div>
           </motion.div>
         )}
-      </motion.nav>      {/* Optimized scroll progress indicator */}
+      </motion.nav>
+      
+      {/* Optimized scroll progress indicator - Apple-style subtle */}
       <motion.div
-        className={`fixed top-0 left-0 h-1 ${darkMode ? 'bg-blue-500' : 'bg-blue-600'} z-50`}
+        className={`fixed top-0 left-0 h-0.5 ${darkMode ? 'bg-white/20' : 'bg-black/10'} z-50`}
         style={{ 
           transformOrigin: "0% 50%",
           width: "100%",
@@ -398,9 +405,9 @@ export default function UltraModernPortfolio() {
         }}
       />
 
-      {/* Hero Section */}
-      <section id="home" className="pt-28 md:pt-32 pb-24 md:pb-32">
-        <div className="max-w-6xl mx-auto px-4 md:px-8">
+      {/* Hero Section - Apple-inspired minimalism */}
+      <section id="home" className="pt-32 md:pt-40 pb-24 md:pb-32">
+        <div className="max-w-5xl mx-auto px-6 md:px-8">
           <motion.div
             className="flex flex-col items-center text-center"
             initial="hidden"
@@ -409,54 +416,60 @@ export default function UltraModernPortfolio() {
             variants={fadeInUp}
           >
             <motion.h1 
-              className="text-4xl md:text-7xl font-bold mb-4 tracking-tight"
+              className="text-4xl md:text-6xl lg:text-7xl font-medium mb-4 tracking-tight"
               animate={{ 
                 backgroundPosition: ["0% center", "100% center"],
                 backgroundSize: ["100% 100%", "200% 100%"] 
               }}
               transition={{ 
-                duration: 8, 
+                duration: 10, 
                 ease: "linear", 
                 repeat: Infinity, 
                 repeatType: "reverse" 
               }}
               style={{
                 backgroundImage: darkMode ? 
-                  "linear-gradient(90deg, #fff, #6e6e73, #fff)" : 
-                  "linear-gradient(90deg, #1d1d1f, #6e6e73, #1d1d1f)",
+                  "linear-gradient(90deg, #fff, #a2a2a7, #fff)" : 
+                  "linear-gradient(90deg, #1d1d1f, #86868b, #1d1d1f)",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                backgroundSize: "200% 100%"
+                backgroundSize: "200% 100%",
+                letterSpacing: '-0.03em' // Apple-like tight spacing
               }}
             >
               Hi, I'm Pratheesh Krishnan
             </motion.h1>
             
             <motion.div
-              className="h-1 w-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full my-8"
+              className="h-px w-16 bg-gradient-to-r from-blue-500/80 to-purple-500/80 rounded-full my-8"
               initial={{ width: 0 }}
-              whileInView={{ width: 80 }}
+              whileInView={{ width: 64 }}
               viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
             />
             
             <motion.p 
               className="text-xl md:text-2xl max-w-2xl mb-12"
               variants={fadeInUp}
+              style={{ letterSpacing: '-0.02em', lineHeight: 1.4 }} // Apple-like typography
             >
               B.Tech Computer Science Student at SASTRA University
             </motion.p>
 
-            <motion.div className="flex flex-wrap gap-4 justify-center">              <motion.a
+            <motion.div className="flex flex-wrap gap-4 justify-center">
+              <motion.a
                 ref={(el) => updateButtonRefs(el, 0)}
                 href="https://github.com/Pratheesh-555"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`px-6 py-3 rounded-full font-medium transition-all 
-                ${darkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800'}`}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.98 }}
+                ${darkMode ? 
+                  'bg-white text-black hover:bg-gray-100' : 
+                  'bg-black text-white hover:bg-gray-900'}`}
+                style={{ letterSpacing: '-0.01em' }} // Apple-like tight spacing
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onMouseMove={(e) => handleMagneticMove(e, 0)}
                 onMouseLeave={() => handleMagneticLeave(0)}
               >
@@ -468,8 +481,9 @@ export default function UltraModernPortfolio() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3 rounded-full font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.98 }}
+                style={{ letterSpacing: '-0.01em' }} // Apple-like tight spacing
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onMouseMove={(e) => handleMagneticMove(e, 1)}
                 onMouseLeave={() => handleMagneticLeave(1)}
               >
@@ -480,38 +494,39 @@ export default function UltraModernPortfolio() {
         </div>
       </section>
 
-      {/* Skills Section with improved responsiveness */}
-      <section id="skills" className={`py-16 md:py-24 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
-        <div className="max-w-6xl mx-auto px-4 md:px-8">
+      {/* Skills Section with Apple-inspired cards */}
+      <section id="skills" className={`py-20 md:py-28 ${darkMode ? 'bg-gray-950' : 'bg-gray-50'}`}>
+        <div className="max-w-5xl mx-auto px-6 md:px-8">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
             variants={fadeInUp}
-            className="mb-12 md:mb-16 text-center"
+            className="mb-16 md:mb-20 text-center"
           >
             <motion.h2 
-              className="text-3xl md:text-5xl font-bold mb-4"
+              className="text-3xl md:text-5xl font-medium mb-4"
+              style={{ letterSpacing: '-0.02em' }} // Apple-like tight spacing
               animate={{ 
                 color: darkMode ? 
-                  ["#ffffff", "#a2aaad", "#ffffff"] : 
-                  ["#000000", "#6e6e73", "#000000"] 
+                  ["#ffffff", "#a2a2a7", "#ffffff"] : 
+                  ["#1d1d1f", "#86868b", "#1d1d1f"] 
               }}
               transition={{ duration: 8, repeat: Infinity }}
             >
               Technical Arsenal
             </motion.h2>
             <motion.div
-              className="h-1 w-20 md:w-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto"
+              className="h-px w-16 md:w-20 bg-gradient-to-r from-blue-500/80 to-purple-500/80 rounded-full mx-auto"
               initial={{ width: 0 }}
-              whileInView={{ width: isMobile ? 80 : 96 }}
+              whileInView={{ width: isMobile ? 64 : 80 }}
               viewport={{ once: true }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
             />
           </motion.div>
 
           <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-5"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -520,29 +535,33 @@ export default function UltraModernPortfolio() {
             {Object.entries(skills).map(([category, items], index) => (
               <motion.div
                 key={category}
-                className={`rounded-2xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg hover:shadow-xl transition-shadow duration-300`}
+                className={`rounded-2xl p-6 ${
+                  darkMode ? 'bg-gray-900/60' : 'bg-white/60'
+                } backdrop-blur-lg shadow-sm border ${
+                  darkMode ? 'border-gray-800' : 'border-gray-100'
+                } hover:shadow-md transition-shadow duration-300`}
                 variants={fadeInUp}
                 whileHover={{
-                  y: -5,
-                  transition: { duration: 0.2 }
+                  y: -3,
+                  transition: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }
                 }}
                 initial="rest"
                 animate="rest"
                 viewport={{ once: true }}
               >
-                <h3 className="text-lg md:text-xl font-semibold mb-4 capitalize">
+                <h3 className="text-lg md:text-xl font-medium mb-4 capitalize" style={{ letterSpacing: '-0.01em' }}>
                   {category}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {items.map(skill => (
                     <motion.span
                       key={skill}
-                      className={`px-3 py-1.5 rounded-full text-sm font-medium ${
-                        darkMode ? 'bg-gray-700 text-blue-300' : 'bg-gray-100 text-blue-600'
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        darkMode ? 'bg-gray-800/80 text-blue-300' : 'bg-gray-100/80 text-blue-600'
                       }`}
                       whileHover={{ 
-                        scale: 1.05,
-                        y: -2,
+                        scale: 1.03,
+                        y: -1,
                         transition: buttonSpring
                       }}
                     >
@@ -556,38 +575,39 @@ export default function UltraModernPortfolio() {
         </div>
       </section>
 
-      {/* Projects Section with enhanced mobile experience */}
-      <section id="projects" className="py-16 md:py-24">
-        <div className="max-w-6xl mx-auto px-4 md:px-8">
+      {/* Projects Section with Apple-inspired cards */}
+      <section id="projects" className="py-20 md:py-28">
+        <div className="max-w-5xl mx-auto px-6 md:px-8">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
             variants={fadeInUp}
-            className="mb-12 md:mb-16 text-center"
+            className="mb-16 md:mb-20 text-center"
           >
             <motion.h2 
-              className="text-3xl md:text-5xl font-bold mb-4"
+              className="text-3xl md:text-5xl font-medium mb-4"
+              style={{ letterSpacing: '-0.02em' }} // Apple-like tight spacing
               animate={{ 
                 color: darkMode ? 
-                  ["#ffffff", "#a2aaad", "#ffffff"] : 
-                  ["#000000", "#6e6e73", "#000000"] 
+                  ["#ffffff", "#a2a2a7", "#ffffff"] : 
+                  ["#1d1d1f", "#86868b", "#1d1d1f"] 
               }}
               transition={{ duration: 8, repeat: Infinity }}
             >
               Featured Projects
             </motion.h2>
             <motion.div
-              className="h-1 w-20 md:w-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto"
+              className="h-px w-16 md:w-20 bg-gradient-to-r from-blue-500/80 to-purple-500/80 rounded-full mx-auto"
               initial={{ width: 0 }}
-              whileInView={{ width: isMobile ? 80 : 96 }}
+              whileInView={{ width: isMobile ? 64 : 80 }}
               viewport={{ once: true }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
             />
           </motion.div>
 
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -596,8 +616,9 @@ export default function UltraModernPortfolio() {
             {projects.map((project, index) => (
               <motion.div
                 key={index}
-                className={`rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300
-                  ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
+                className={`rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border ${
+                  darkMode ? 'border-gray-800 bg-gray-900/50' : 'border-gray-100 bg-white/50'
+                } backdrop-blur-sm`}
                 variants={fadeInUp}
                 whileHover={cardHover.hover}
                 initial="rest"
@@ -610,27 +631,29 @@ export default function UltraModernPortfolio() {
                   WebkitTransform: "translate3d(0, 0, 0)"
                 }}
               >
-                <div className={`h-40 md:h-48 relative overflow-hidden ${
-                  index % 3 === 0 ? 'bg-gradient-to-br from-blue-500 to-purple-600' :
-                  index % 3 === 1 ? 'bg-gradient-to-br from-emerald-500 to-blue-600' :
-                  'bg-gradient-to-br from-amber-500 to-rose-600'
+                <div className={`h-36 md:h-40 relative overflow-hidden ${
+                  index % 3 === 0 ? 'bg-gradient-to-br from-blue-500/90 to-purple-600/90' :
+                  index % 3 === 1 ? 'bg-gradient-to-br from-emerald-500/90 to-blue-600/90' :
+                  'bg-gradient-to-br from-amber-500/90 to-rose-600/90'
                 }`}>
                   <motion.div
-                    className="absolute inset-0"
+                    className="absolute inset-0 backdrop-blur-[1px]"
                     whileHover={{
-                      scale: 1.1,
-                      transition: { duration: 0.4 }
+                      scale: 1.05,
+                      transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }
                     }}
                   />
                 </div>
                 <motion.div 
                   className="p-6"
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ delay: index * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
                 >
-                  <h3 className="text-xl md:text-2xl font-bold mb-3">{project.title}</h3>
+                  <h3 className="text-xl md:text-2xl font-medium mb-3" style={{ letterSpacing: '-0.01em' }}>
+                    {project.title}
+                  </h3>
                   <p className={`mb-4 text-sm md:text-base ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                     {project.description}
                   </p>
@@ -644,7 +667,7 @@ export default function UltraModernPortfolio() {
 
       {/* Achievements Section */}
       <section id="achievements" className={`py-24 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
-        <div className="max-w-6xl mx-auto px-4 md:px-8">
+        <div className="max-w-5xl mx-auto px-6 md:px-8">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -653,22 +676,22 @@ export default function UltraModernPortfolio() {
             className="mb-16 text-center"
           >
             <motion.h2 
-              className="text-3xl md:text-5xl font-bold mb-4"
+              className="text-3xl md:text-5xl font-medium mb-4"
               animate={{ 
                 color: darkMode ? 
-                  ["#ffffff", "#a2aaad", "#ffffff"] : 
-                  ["#000000", "#6e6e73", "#000000"] 
+                  ["#ffffff", "#a2a2a7", "#ffffff"] : 
+                  ["#1d1d1f", "#86868b", "#1d1d1f"] 
               }}
               transition={{ duration: 8, repeat: Infinity }}
             >
               Achievements
             </motion.h2>
             <motion.div
-              className="h-1 w-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto"
+              className="h-px w-16 md:w-20 bg-gradient-to-r from-blue-500/80 to-purple-500/80 rounded-full mx-auto"
               initial={{ width: 0 }}
-              whileInView={{ width: 96 }}
+              whileInView={{ width: 80 }}
               viewport={{ once: true }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.8 }}
             />
           </motion.div>
 
@@ -706,7 +729,7 @@ export default function UltraModernPortfolio() {
 
       {/* Contact Section */}
       <section id="contact" className="py-24">
-        <div className="max-w-4xl mx-auto px-4 md:px-8 text-center">
+        <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -714,22 +737,22 @@ export default function UltraModernPortfolio() {
             variants={fadeInUp}
           >
             <motion.h2 
-              className="text-3xl md:text-5xl font-bold mb-4"
+              className="text-3xl md:text-5xl font-medium mb-4"
               animate={{ 
                 color: darkMode ? 
-                  ["#ffffff", "#a2aaad", "#ffffff"] : 
-                  ["#000000", "#6e6e73", "#000000"] 
+                  ["#ffffff", "#a2a2a7", "#ffffff"] : 
+                  ["#1d1d1f", "#86868b", "#1d1d1f"] 
               }}
               transition={{ duration: 8, repeat: Infinity }}
             >
               Let's Connect
             </motion.h2>
             <motion.div
-              className="h-1 w-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto mb-8"
+              className="h-px w-16 bg-gradient-to-r from-blue-500/80 to-purple-500/80 rounded-full mx-auto mb-8"
               initial={{ width: 0 }}
-              whileInView={{ width: 96 }}
+              whileInView={{ width: 80 }}
               viewport={{ once: true }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.8 }}
             />
             
             <motion.p 
@@ -756,7 +779,7 @@ export default function UltraModernPortfolio() {
 
       {/* Footer */}
       <footer className={`py-8 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
-        <div className="max-w-6xl mx-auto px-4 md:px-8 text-center">
+        <div className="max-w-6xl mx-auto px-6 md:px-8 text-center">
           <motion.p 
             className={darkMode ? 'text-gray-400' : 'text-gray-600'}
             initial={{ opacity: 0 }}
