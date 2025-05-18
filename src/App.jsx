@@ -1,10 +1,174 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform, useAnimation, useMotionValue, useSpring } from 'framer-motion';
 
-export default function AppleInspiredPortfolio() {
+export default function UltraModernPortfolio() {
+  // State hooks
   const [darkMode, setDarkMode] = useState(true);
+  const [scrollPosition, setScrollPosition] = useState(0);
   const [activeSection, setActiveSection] = useState("home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cursorVariant, setCursorVariant] = useState("default");
+  
+  // Refs
+  const mainRef = useRef(null);
+  const cursorRef = useRef(null);
+  const buttonRefs = useRef([]);
+  // Animation hooks and responsive setup
+  const { scrollY } = useScroll();
+  const [isMobile, setIsMobile] = useState(false);
+  const cursorX = useSpring(useMotionValue(0), { stiffness: 500, damping: 50 });
+  const cursorY = useSpring(useMotionValue(0), { stiffness: 500, damping: 50 });
+  const scrollProgress = useSpring(0);
+  // Update scroll progress
+  useEffect(() => {
+    const unsubscribe = scrollY.on("change", (latest) => {
+      const progress = latest / (document.documentElement.scrollHeight - window.innerHeight);
+      scrollProgress.set(progress);
+    });
+    return () => unsubscribe();
+  }, [scrollY, scrollProgress]);
+
+  // Handle responsive state
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Enhanced animations
+  const springConfig = { stiffness: 100, damping: 15, mass: 0.5 };
+  const buttonSpring = { type: "spring", ...springConfig };
+  const cardSpring = { type: "spring", stiffness: 150, damping: 20 };
+
+  // Responsive animations based on device
+  const mobileAnimations = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.4, ease: "easeOut" }
+    }
+  };
+
+  const desktopAnimations = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
+
+  const fadeInUp = isMobile ? mobileAnimations : desktopAnimations;
+
+  // Enhanced stagger container with better performance
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: isMobile ? 0.05 : 0.1,
+        delayChildren: isMobile ? 0.1 : 0.2
+      }
+    }
+  };
+
+  // Improved card hover with better performance
+  const cardHover = {
+    rest: { 
+      scale: 1,
+      transition: cardSpring
+    },
+    hover: { 
+      scale: isMobile ? 1.01 : 1.02,
+      y: isMobile ? -5 : -10,
+      transition: cardSpring
+    }
+  };
+  // Magnetic effect for buttons with useRef array
+  const updateButtonRefs = (element, index) => {
+    if (element && !buttonRefs.current[index]) {
+      buttonRefs.current[index] = element;
+    }
+  };
+
+  const handleMagneticMove = (event, index) => {
+    if (isMobile) return;
+    const button = buttonRefs.current[index];
+    if (!button) return;
+    
+    const rect = button.getBoundingClientRect();
+    const x = (event.clientX - rect.left - rect.width / 2) * 0.2;
+    const y = (event.clientY - rect.top - rect.height / 2) * 0.2;
+    
+    button.style.transform = `translate(${x}px, ${y}px)`;
+    setCursorVariant("button");
+  };
+
+  const handleMagneticLeave = (index) => {
+    if (isMobile) return;
+    const button = buttonRefs.current[index];
+    if (!button) return;
+    
+    button.style.transform = `translate(0px, 0px)`;
+    setCursorVariant("default");
+  };
+
+  // Enhanced cursor variants with better performance
+  const cursorVariants = {
+    default: {
+      height: isMobile ? 24 : 32,
+      width: isMobile ? 24 : 32,
+      x: cursorX,
+      y: cursorY,
+      backgroundColor: darkMode ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
+      mixBlendMode: "difference",
+      transition: buttonSpring
+    },
+    text: {
+      height: isMobile ? 36 : 48,
+      width: isMobile ? 36 : 48,
+      x: cursorX,
+      y: cursorY,
+      backgroundColor: darkMode ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)",
+      mixBlendMode: "difference",
+      transition: buttonSpring
+    },
+    button: {
+      height: isMobile ? 48 : 64,
+      width: isMobile ? 48 : 64,
+      x: cursorX,
+      y: cursorY,
+      backgroundColor: darkMode ? "rgba(255, 255, 255, 0.3)" : "rgba(0, 0, 0, 0.3)",
+      mixBlendMode: "difference",
+      transition: buttonSpring
+    }
+  };
+
+  // Mouse move handler
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      cursorX.set(e.clientX - 16);
+      cursorY.set(e.clientY - 16);
+
+      // Update cursor variant based on target element
+      const target = e.target;
+      if (target.tagName === "BUTTON" || target.tagName === "A") {
+        setCursorVariant("button");
+      } else if (target.tagName === "P" || target.tagName === "H1" || target.tagName === "H2" || target.tagName === "H3") {
+        setCursorVariant("text");
+      } else {
+        setCursorVariant("default");
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [cursorX, cursorY]);
+
   useEffect(() => {
     const handleScroll = () => {
       // Determine active section
@@ -64,31 +228,6 @@ export default function AppleInspiredPortfolio() {
 
   const navItems = ["Home", "Skills", "Projects", "Achievements", "Contact"];
   
-  // Apple-inspired animations
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
-    }
-  };
-  
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-  
-  const cardHover = {
-    rest: { scale: 1, transition: { duration: 0.2, ease: "easeInOut" } },
-    hover: { scale: 1.02, transition: { duration: 0.2, ease: "easeInOut" } }
-  };
-
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -101,8 +240,52 @@ export default function AppleInspiredPortfolio() {
   };
 
   return (
-    <div className={`${darkMode ? 'bg-black text-white' : 'bg-white text-black'} min-h-screen font-sans`}>
-      {/* Navigation - Apple style with blur effect */}
+    <div className={`${darkMode ? 'bg-black text-white' : 'bg-white text-black'} min-h-screen font-sans relative overflow-hidden`}>
+      {/* Custom Cursor - Only show on non-touch devices */}
+      {!isMobile && (
+        <motion.div
+          className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-50"
+          variants={cursorVariants}
+          animate={cursorVariant}
+          ref={cursorRef}
+        />
+      )}
+      
+      {/* Optimized Animated Background - Reduce particles on mobile */}
+      <div className="absolute inset-0 overflow-hidden">
+        {Array.from({ length: isMobile ? 10 : 20 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className={`absolute w-2 h-2 rounded-full ${
+              darkMode ? 'bg-gray-700' : 'bg-gray-200'
+            }`}
+            initial={{
+              x: Math.random() * window.innerWidth,
+              y: Math.random() * window.innerHeight,
+              opacity: Math.random() * 0.3 + 0.2
+            }}
+            animate={{
+              x: [
+                Math.random() * window.innerWidth,
+                Math.random() * window.innerWidth,
+                Math.random() * window.innerWidth
+              ],
+              y: [
+                Math.random() * window.innerHeight,
+                Math.random() * window.innerHeight,
+                Math.random() * window.innerHeight
+              ]
+            }}
+            transition={{
+              duration: isMobile ? Math.random() * 5 + 15 : Math.random() * 10 + 20,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* Navigation with improved mobile experience */}
       <motion.nav 
         className={`fixed w-full z-50 ${darkMode ? 'bg-black/80' : 'bg-white/80'} backdrop-blur-xl`}
         initial={{ y: -100 }}
@@ -110,26 +293,29 @@ export default function AppleInspiredPortfolio() {
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="max-w-6xl mx-auto px-4 md:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-16 md:h-20">
             <motion.div 
               whileHover={{ scale: 1.05 }}
-              className={`font-bold text-xl ${darkMode ? 'text-white' : 'text-black'}`}
+              whileTap={{ scale: 0.95 }}
+              className={`font-bold text-lg md:text-xl ${darkMode ? 'text-white' : 'text-black'}`}
             >
               portfolio.
             </motion.div>
             
-            {/* Desktop Menu */}
-            <div className="hidden md:flex space-x-8">
+            {/* Desktop Menu with improved animations */}
+            <div className="hidden md:flex space-x-6 lg:space-x-8">
               {navItems.map((item, index) => (
                 <motion.button
                   key={index}
                   onClick={() => scrollToSection(item.toLowerCase())}
-                  className={`text-sm font-medium transition duration-300 ${
+                  className={`text-sm lg:text-base font-medium transition duration-300 ${
                     activeSection === item.toLowerCase() 
                       ? darkMode ? 'text-white' : 'text-black' 
                       : darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'
                   }`}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={buttonSpring}
                 >
                   {item}
                 </motion.button>
@@ -139,9 +325,10 @@ export default function AppleInspiredPortfolio() {
             <div className="flex items-center space-x-4">
               <motion.button
                 whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.9 }}
+                transition={buttonSpring}
                 onClick={() => setDarkMode(!darkMode)}
-                className={`rounded-full p-2 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}
+                className={`rounded-full p-2 md:p-3 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}
               >
                 {darkMode ? (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -154,12 +341,15 @@ export default function AppleInspiredPortfolio() {
                 )}
               </motion.button>
               
-              {/* Mobile menu button */}
+              {/* Improved mobile menu button */}
               <div className="md:hidden">
                 <motion.button
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={buttonSpring}
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="text-gray-300 focus:outline-none"
+                  className={`text-gray-300 focus:outline-none p-2 rounded-lg ${
+                    darkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
+                  }`}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
@@ -170,26 +360,27 @@ export default function AppleInspiredPortfolio() {
           </div>
         </div>
         
-        {/* Mobile menu */}
+        {/* Enhanced mobile menu with smooth animations */}
         {isMenuOpen && (
           <motion.div 
             className={`md:hidden ${darkMode ? 'bg-black/95' : 'bg-white/95'} backdrop-blur-xl`}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <div className="px-4 py-4 space-y-3">
+            <div className="px-4 py-4 space-y-2">
               {navItems.map((item, index) => (
                 <motion.button
                   key={index}
                   onClick={() => scrollToSection(item.toLowerCase())}
-                  className={`block w-full text-left py-2 px-3 rounded-lg ${
+                  className={`block w-full text-left py-3 px-4 rounded-xl ${
                     activeSection === item.toLowerCase()
                       ? darkMode ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'
                       : darkMode ? 'text-gray-300' : 'text-gray-700'
                   }`}
                   whileTap={{ scale: 0.98 }}
+                  transition={buttonSpring}
                 >
                   {item}
                 </motion.button>
@@ -197,7 +388,15 @@ export default function AppleInspiredPortfolio() {
             </div>
           </motion.div>
         )}
-      </motion.nav>
+      </motion.nav>      {/* Optimized scroll progress indicator */}
+      <motion.div
+        className={`fixed top-0 left-0 h-1 ${darkMode ? 'bg-blue-500' : 'bg-blue-600'} z-50`}
+        style={{ 
+          transformOrigin: "0% 50%",
+          width: "100%",
+          scaleX: scrollProgress
+        }}
+      />
 
       {/* Hero Section */}
       <section id="home" className="pt-28 md:pt-32 pb-24 md:pb-32">
@@ -249,8 +448,8 @@ export default function AppleInspiredPortfolio() {
               B.Tech Computer Science Student at SASTRA University
             </motion.p>
 
-            <motion.div className="flex flex-wrap gap-4 justify-center">
-              <motion.a
+            <motion.div className="flex flex-wrap gap-4 justify-center">              <motion.a
+                ref={(el) => updateButtonRefs(el, 0)}
                 href="https://github.com/Pratheesh-555"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -258,16 +457,21 @@ export default function AppleInspiredPortfolio() {
                 ${darkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800'}`}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
+                onMouseMove={(e) => handleMagneticMove(e, 0)}
+                onMouseLeave={() => handleMagneticLeave(0)}
               >
                 GitHub
               </motion.a>
               <motion.a
+                ref={(el) => updateButtonRefs(el, 1)}
                 href="https://www.linkedin.com/in/pratheesh-krishnan-30b08a282"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3 rounded-full font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.98 }}
+                onMouseMove={(e) => handleMagneticMove(e, 1)}
+                onMouseLeave={() => handleMagneticLeave(1)}
               >
                 LinkedIn
               </motion.a>
@@ -276,15 +480,15 @@ export default function AppleInspiredPortfolio() {
         </div>
       </section>
 
-      {/* Skills Section */}
-      <section id="skills" className={`py-24 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+      {/* Skills Section with improved responsiveness */}
+      <section id="skills" className={`py-16 md:py-24 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-50px" }}
             variants={fadeInUp}
-            className="mb-16 text-center"
+            className="mb-12 md:mb-16 text-center"
           >
             <motion.h2 
               className="text-3xl md:text-5xl font-bold mb-4"
@@ -298,42 +502,49 @@ export default function AppleInspiredPortfolio() {
               Technical Arsenal
             </motion.h2>
             <motion.div
-              className="h-1 w-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto"
+              className="h-1 w-20 md:w-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto"
               initial={{ width: 0 }}
-              whileInView={{ width: 96 }}
+              whileInView={{ width: isMobile ? 80 : 96 }}
               viewport={{ once: true }}
               transition={{ duration: 1 }}
             />
           </motion.div>
 
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-50px" }}
           >
-            {Object.entries(skills).map(([category, items]) => (
+            {Object.entries(skills).map(([category, items], index) => (
               <motion.div
                 key={category}
-                className={`rounded-2xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-xl`}
+                className={`rounded-2xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg hover:shadow-xl transition-shadow duration-300`}
                 variants={fadeInUp}
-                whileHover="hover"
+                whileHover={{
+                  y: -5,
+                  transition: { duration: 0.2 }
+                }}
                 initial="rest"
                 animate="rest"
                 viewport={{ once: true }}
               >
-                <h3 className="text-xl font-semibold mb-4 capitalize">
+                <h3 className="text-lg md:text-xl font-semibold mb-4 capitalize">
                   {category}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {items.map(skill => (
                     <motion.span
                       key={skill}
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium ${
                         darkMode ? 'bg-gray-700 text-blue-300' : 'bg-gray-100 text-blue-600'
                       }`}
-                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileHover={{ 
+                        scale: 1.05,
+                        y: -2,
+                        transition: buttonSpring
+                      }}
                     >
                       {skill}
                     </motion.span>
@@ -345,15 +556,15 @@ export default function AppleInspiredPortfolio() {
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="py-24">
+      {/* Projects Section with enhanced mobile experience */}
+      <section id="projects" className="py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-50px" }}
             variants={fadeInUp}
-            className="mb-16 text-center"
+            className="mb-12 md:mb-16 text-center"
           >
             <motion.h2 
               className="text-3xl md:text-5xl font-bold mb-4"
@@ -367,44 +578,64 @@ export default function AppleInspiredPortfolio() {
               Featured Projects
             </motion.h2>
             <motion.div
-              className="h-1 w-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto"
+              className="h-1 w-20 md:w-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto"
               initial={{ width: 0 }}
-              whileInView={{ width: 96 }}
+              whileInView={{ width: isMobile ? 80 : 96 }}
               viewport={{ once: true }}
               transition={{ duration: 1 }}
             />
           </motion.div>
 
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-50px" }}
           >
             {projects.map((project, index) => (
               <motion.div
                 key={index}
-                className={`rounded-2xl overflow-hidden shadow-xl ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
+                className={`rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300
+                  ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
                 variants={fadeInUp}
                 whileHover={cardHover.hover}
                 initial="rest"
                 animate="rest"
                 viewport={{ once: true }}
+                style={{
+                  backfaceVisibility: "hidden",
+                  WebkitBackfaceVisibility: "hidden",
+                  transform: "translate3d(0, 0, 0)",
+                  WebkitTransform: "translate3d(0, 0, 0)"
+                }}
               >
-                <div className={`h-48 ${
+                <div className={`h-40 md:h-48 relative overflow-hidden ${
                   index % 3 === 0 ? 'bg-gradient-to-br from-blue-500 to-purple-600' :
                   index % 3 === 1 ? 'bg-gradient-to-br from-emerald-500 to-blue-600' :
                   'bg-gradient-to-br from-amber-500 to-rose-600'
                 }`}>
+                  <motion.div
+                    className="absolute inset-0"
+                    whileHover={{
+                      scale: 1.1,
+                      transition: { duration: 0.4 }
+                    }}
+                  />
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                  <p className={`mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <motion.div 
+                  className="p-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <h3 className="text-xl md:text-2xl font-bold mb-3">{project.title}</h3>
+                  <p className={`mb-4 text-sm md:text-base ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                     {project.description}
                   </p>
                   <p className="text-sm font-medium text-blue-500">{project.tech}</p>
-                </div>
+                </motion.div>
               </motion.div>
             ))}
           </motion.div>
