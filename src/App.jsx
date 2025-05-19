@@ -8,6 +8,9 @@ export default function UltraModernPortfolio() {
   const [activeSection, setActiveSection] = useState("home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cursorVariant, setCursorVariant] = useState("default");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [password, setPassword] = useState('');
   
   // Refs
   const mainRef = useRef(null);
@@ -271,30 +274,53 @@ export default function UltraModernPortfolio() {
   const skills = {
     programming: ['C', 'C++', 'Java'],
     webDev: ['HTML', 'CSS', 'JavaScript', 'React.js', 'Express.js', 'Node.js'],
-    tools: ['Git', 'GitHub', 'APIs'],
-    languages: ['Tamil', 'English', 'Telugu', 'Hindi', 'German']
+    tools: ['Git', 'GitHub', 'APIs']
   };
 
   const projects = [
     {
+      title: "Mental Wellness AI",
+      description: "AI-powered mental wellness support platform with real-time analysis",
+      tech: "React · Node.js · AI · TensorFlow",
+      link: "https://mental-wellness-xi.vercel.app/",
+      image: "https://img.freepik.com/free-vector/mental-health-awareness-concept_23-2148514654.jpg",
+      requiresAuth: true
+    },
+    {
+      title: "AttendeAze",
+      description: "QR-based attendance management system",
+      tech: "React · Node.js · QR Technology",
+      link: "https://attendeaze.netlify.app/",
+      image: "https://img.freepik.com/free-vector/qr-code-concept-illustration_114360-5853.jpg",
+      requiresAuth: true
+    },
+    {
       title: "Stress Analyzer",
       description: "AI-powered stress analysis platform using facial recognition",
       tech: "React · Node.js · Express.js · AI",
-      link: "#"
-    },
-    {
-      title: "Mental Wellness Platform",
-      description: "AI-driven mental wellness support system",
-      tech: "React · Node.js · AI APIs",
-      link: "#"
-    },
-    {
-      title: "Glacier Analysis",
-      description: "GLOF analysis using Landsat satellite data",
-      tech: "Python · GIS · NDWI",
-      link: "#"
+      link: "#",
+      image: "https://img.freepik.com/free-vector/facial-recognition-concept-illustration_114360-7072.jpg",
+      requiresAuth: false
     }
   ];
+
+  const handleProjectClick = (project) => {
+    if (project.requiresAuth && !isAuthenticated) {
+      setShowAuthDialog(true);
+      return;
+    }
+    window.open(project.link, '_blank');
+  };
+
+  const handleAuthentication = () => {
+    if (password === '555') {
+      setIsAuthenticated(true);
+      setShowAuthDialog(false);
+      setPassword('');
+    } else {
+      alert('Incorrect password');
+    }
+  };
 
   const achievements = [
     "DAKSH AI Hackathon 2nd Place (2025)",
@@ -497,9 +523,27 @@ export default function UltraModernPortfolio() {
             className="flex flex-col items-center text-center"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.3 }}
             variants={fadeInUp}
           >
+            <motion.div
+              className="w-40 h-40 md:w-48 md:h-48 mb-8 rounded-full relative"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* Animated gradient border */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 animate-border-rotate" />
+              
+              {/* Photo container */}
+              <div className="absolute inset-0.5 rounded-full overflow-hidden bg-gradient-to-br from-gray-900 to-black">
+                <img
+                  src="profile.jpg"
+                  alt="Pratheesh Krishnan"
+                  className="w-full h-full object-cover rounded-full"
+                />
+              </div>
+            </motion.div>
+
             <motion.h1 
               className="text-4xl md:text-7xl font-bold mb-4 tracking-tight"
               animate={{ 
@@ -540,7 +584,8 @@ export default function UltraModernPortfolio() {
               B.Tech Computer Science Student at SASTRA University
             </motion.p>
 
-            <motion.div className="flex flex-wrap gap-4 justify-center">              <motion.a
+            <motion.div className="flex flex-wrap gap-4 justify-center">
+              <motion.a
                 ref={(el) => updateButtonRefs(el, 0)}
                 href="https://github.com/Pratheesh-555"
                 target="_blank"
@@ -686,13 +731,14 @@ export default function UltraModernPortfolio() {
             {projects.map((project, index) => (
               <motion.div
                 key={index}
-                className={`rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300
+                className={`rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer
                   ${darkMode ? 'bg-gray-800' : 'bg-white'}`}
                 variants={fadeInUp}
                 whileHover={cardHover.hover}
                 initial="rest"
                 animate="rest"
                 viewport={{ once: true }}
+                onClick={() => handleProjectClick(project)}
                 style={{
                   backfaceVisibility: "hidden",
                   WebkitBackfaceVisibility: "hidden",
@@ -700,18 +746,25 @@ export default function UltraModernPortfolio() {
                   WebkitTransform: "translate3d(0, 0, 0)"
                 }}
               >
-                <div className={`h-40 md:h-48 relative overflow-hidden ${
-                  index % 3 === 0 ? 'bg-gradient-to-br from-blue-500 to-purple-600' :
-                  index % 3 === 1 ? 'bg-gradient-to-br from-emerald-500 to-blue-600' :
-                  'bg-gradient-to-br from-amber-500 to-rose-600'
-                }`}>
-                  <motion.div
-                    className="absolute inset-0"
-                    whileHover={{
-                      scale: 1.1,
-                      transition: { duration: 0.4 }
+                <div className="h-48 md:h-56 relative overflow-hidden group">
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+                    style={{ 
+                      objectFit: 'cover',
+                      backfaceVisibility: 'hidden'
                     }}
                   />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 group-hover:opacity-0 transition-opacity duration-300"/>
+                  {project.requiresAuth && (
+                    <div className="absolute top-4 right-4 bg-black/70 text-white px-2 py-1 rounded-full text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    </div>
+                  )}
                 </div>
                 <motion.div 
                   className="p-6"
@@ -730,6 +783,48 @@ export default function UltraModernPortfolio() {
             ))}
           </motion.div>
         </div>
+
+        {/* Authentication Dialog */}
+        {showAuthDialog && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className={`${darkMode ? 'bg-gray-800' : 'bg-white'} p-6 rounded-2xl shadow-xl max-w-md w-full mx-4`}
+            >
+              <h3 className="text-xl font-bold mb-4">Enter Password</h3>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={`w-full px-4 py-2 rounded-lg mb-4 ${
+                  darkMode ? 'bg-gray-700 text-white' : 'bg-gray-100 text-black'
+                }`}
+                placeholder="Enter password"
+                onKeyPress={(e) => e.key === 'Enter' && handleAuthentication()}
+              />
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={() => {
+                    setShowAuthDialog(false);
+                    setPassword('');
+                  }}
+                  className={`px-4 py-2 rounded-lg ${
+                    darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
+                  }`}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleAuthentication}
+                  className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                >
+                  Submit
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
       </section>
 
       {/* Achievements Section */}
@@ -738,7 +833,7 @@ export default function UltraModernPortfolio() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: false, margin: "-100px", amount: 0.3 }}
             variants={fadeInUp}
             className="mb-16 text-center"
           >
