@@ -404,16 +404,15 @@ export default function UltraModernPortfolio() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
         </svg>
       )
-    },
-    {
-      title: "LC50 Competition Winner",
+    },    {
+      title: "LeetCode 50 Days Badge",
       year: "2024",
-      description: "Won first place in the LC50 algorithmic programming competition, solving complex problems efficiently.",
+      description: "Achieved the LeetCode 50 Days badge for consistently solving coding problems daily, demonstrating dedication to continuous learning and algorithmic problem-solving.",
       image: "/lc50.png",
       thumbnailImage: "/lc50.png",
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
         </svg>
       )
     }
