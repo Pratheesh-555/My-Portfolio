@@ -1,5 +1,52 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useAnimation, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useAnimation, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
+
+const navItems = ["Home", "Skills", "Projects", "Achievements", "Contact"];
+
+const ImagePopup = ({ image, onClose }) => {
+  if (!image) return null;
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+    >
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.8, opacity: 0 }}
+        transition={{ type: "spring", duration: 0.5 }}
+        className="relative max-w-5xl w-full"
+        onClick={e => e.stopPropagation()}
+      >
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={onClose}
+          className="absolute -top-4 -right-4 bg-white dark:bg-gray-800 rounded-full p-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors z-10"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </motion.button>
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-2 shadow-2xl">
+          <motion.img
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            src={image}
+            alt="Achievement Certificate"
+            className="w-full h-auto rounded-lg"
+            style={{ maxHeight: "85vh" }}
+          />
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 export default function UltraModernPortfolio() {
   // State hooks
@@ -12,6 +59,7 @@ export default function UltraModernPortfolio() {
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   const [password, setPassword] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const triggerConfetti = () => {
     setShowConfetti(true);
@@ -282,7 +330,6 @@ export default function UltraModernPortfolio() {
     webDev: ['HTML', 'CSS', 'JavaScript', 'React.js', 'Express.js', 'Node.js'],
     tools: ['Git', 'GitHub', 'APIs']
   };
-
   const projects = [
     {
       title: "Mental Wellness AI",
@@ -299,14 +346,6 @@ export default function UltraModernPortfolio() {
       link: "https://attendeaze.netlify.app/",
       image: "https://img.freepik.com/free-vector/qr-code-concept-illustration_114360-5853.jpg",
       requiresAuth: true
-    },
-    {
-      title: "Stress Analyzer",
-      description: "AI-powered stress analysis platform using facial recognition",
-      tech: "React · Node.js · Express.js · AI",
-      link: "#",
-      image: "https://img.freepik.com/free-vector/facial-recognition-concept-illustration_114360-7072.jpg",
-      requiresAuth: false
     }
   ];
 
@@ -329,14 +368,32 @@ export default function UltraModernPortfolio() {
   };
 
   const achievements = [
-    "DAKSH AI Hackathon 2nd Place (2025)",
-    "Smart India Hackathon College-Level Selection (2024)",
-    "PayPal Career Academy Student",
-    "Best Student Award (Twice)"
+    {
+      title: "DAKSH AI Hackathon 2nd Place",
+      year: "2025",
+      description: "Led a team of 4 to develop an AI-powered healthcare solution, securing 2nd place among 200+ teams.",
+      image: "/daksh2025.png",
+      thumbnailImage: "/daksh2025.png",
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+        </svg>
+      )
+    },
+    {
+      title: "LC50 Competition Winner",
+      year: "2024",
+      description: "Won first place in the LC50 algorithmic programming competition, solving complex problems efficiently.",
+      image: "/lc50.png",
+      thumbnailImage: "/lc50.png",
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
+    }
   ];
 
-  const navItems = ["Home", "Skills", "Projects", "Achievements", "Contact"];
-  
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -462,7 +519,7 @@ export default function UltraModernPortfolio() {
                   </svg>
                 ) : (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 9.003 0 008.354-5.646z" />
                   </svg>
                 )}
               </motion.button>
@@ -555,10 +612,9 @@ export default function UltraModernPortfolio() {
                 }}
               />
               
-              {/* Photo container */}
-              <div className="absolute inset-[3px] rounded-full overflow-hidden bg-gradient-to-br from-gray-900 to-black">
+              {/* Photo container */}              <div className="absolute inset-[3px] rounded-full overflow-hidden bg-gradient-to-br from-gray-900 to-black">
                 <img
-                  src="profile.jpg"
+                  src="/profile.jpg"
                   alt="Pratheesh Krishnan"
                   className="w-full h-full object-cover rounded-full"
                 />
@@ -659,10 +715,8 @@ export default function UltraModernPortfolio() {
               viewport={{ once: true }}
               transition={{ duration: 1 }}
             />
-          </motion.div>
-
-          <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+          </motion.div>          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -735,10 +789,8 @@ export default function UltraModernPortfolio() {
               viewport={{ once: true }}
               transition={{ duration: 1 }}
             />
-          </motion.div>
-
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          </motion.div>          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -841,9 +893,7 @@ export default function UltraModernPortfolio() {
             </motion.div>
           </div>
         )}
-      </section>
-
-      {/* Achievements Section */}
+      </section>      {/* Achievements Section */}
       <section id="achievements" className={`py-24 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <motion.div
@@ -874,7 +924,7 @@ export default function UltraModernPortfolio() {
           </motion.div>
 
           <motion.div 
-            className="max-w-3xl mx-auto"
+            className="max-w-3xl mx-auto grid gap-6"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -883,27 +933,61 @@ export default function UltraModernPortfolio() {
             {achievements.map((achievement, index) => (
               <motion.div
                 key={index}
-                className={`mb-6 rounded-xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg`}
+                className={`rounded-xl p-6 ${darkMode ? 'bg-gray-800/50' : 'bg-white'} backdrop-blur-sm shadow-xl cursor-pointer`}
                 variants={fadeInUp}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -5, scale: 1.02 }}
                 transition={{ duration: 0.2 }}
                 viewport={{ once: true }}
+                onClick={() => setSelectedImage(achievement.image)}
               >
-                <div className="flex items-center">
-                  <div className={`mr-4 h-12 w-12 flex items-center justify-center rounded-full ${
-                    darkMode ? 'bg-blue-900 text-blue-300' : 'bg-blue-100 text-blue-600'
-                  }`}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                    </svg>
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className={`h-12 w-12 flex items-center justify-center rounded-xl ${
+                      darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'
+                    }`}>
+                      {achievement.icon}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold mb-1">{achievement.title}</h3>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                          {achievement.year}
+                        </p>
+                        <span className={darkMode ? 'text-gray-600' : 'text-gray-400'}>•</span>
+                        <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                          {achievement.description}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="text-lg font-medium">{achievement}</h3>
+                  {achievement.image && (
+                    <motion.button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedImage(achievement.image);
+                      }}
+                      className={`shrink-0 px-4 py-2 rounded-lg text-sm font-medium ${
+                        darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'
+                      } transition-colors`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      View Certificate →
+                    </motion.button>
+                  )}
                 </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
+
+      {/* Image Popup */}
+      <AnimatePresence>
+        {selectedImage && (
+          <ImagePopup image={selectedImage} onClose={() => setSelectedImage(null)} />
+        )}
+      </AnimatePresence>
 
       {/* Contact Section */}
       <section id="contact" className="py-24">
