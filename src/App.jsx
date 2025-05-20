@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useAnimation, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
+import resumePDF from './NetMed_Resume_PK.pdf';
 
 const navItems = ["Home", "Skills", "Projects", "Achievements", "Contact"];
 
@@ -324,12 +325,36 @@ export default function UltraModernPortfolio() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   const skills = {
-    programming: ['C', 'C++', 'Java'],
-    webDev: ['HTML', 'CSS', 'JavaScript', 'React.js', 'Express.js', 'Node.js'],
-    tools: ['Git', 'GitHub', 'APIs']
+    programmingLanguages: {
+      title: "Programming Languages",
+      items: [
+        { name: "Python" },
+        { name: "Java" },
+        { name: "C++" },
+        { name: "C" }
+      ]
+    },
+    webTechnologies: {
+      title: "Web Technologies",
+      items: [
+        { name: "HTML" },
+        { name: "CSS" },
+        { name: "JavaScript" },
+        { name: "React.js" },
+        { name: "Express.js" },
+        { name: "Node.js" }
+      ]
+    },
+    databases: {
+      title: "Databases",
+      items: [
+        { name: "MongoDB" },
+        { name: "MySQL" }
+      ]
+    }
   };
+
   const projects = [
     {
       title: "Mental Wellness AI",
@@ -682,84 +707,121 @@ export default function UltraModernPortfolio() {
                 </svg>
                 LinkedIn
               </motion.a>
+              <motion.a
+                href={resumePDF}
+                download="Pratheesh_Krishnan_Resume.pdf"
+                className={`px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 group
+                ${darkMode ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'}`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <svg className="w-5 h-5 group-hover:rotate-12 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Download CV
+              </motion.a>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Skills Section with improved responsiveness */}
-      <section id="skills" className={`py-16 md:py-24 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
-        <div className="max-w-6xl mx-auto px-4 md:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
+      {/* Skills Section */}      <motion.section
+        id="skills"
+        className="py-20 px-4 md:px-8 lg:px-16"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={staggerContainer}
+      >
+        <motion.div className="max-w-6xl mx-auto">
+          <motion.h2 
+            className="text-4xl font-bold text-center mb-16"
             variants={fadeInUp}
-            className="mb-12 md:mb-16 text-center"
+            style={{
+              backgroundImage: darkMode ? 
+                "linear-gradient(90deg, #fff, #6e6e73, #fff, #fff, #6e6e73, #fff)" : 
+                "linear-gradient(90deg, #1d1d1f, #6e6e73, #1d1d1f, #1d1d1f, #6e6e73, #1d1d1f)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundSize: "200% 100%"
+            }}
+            animate={{ 
+              backgroundPosition: ["0% center", "200% center"]
+            }}
+            transition={{ 
+              duration: 15, 
+              ease: "linear", 
+              repeat: Infinity
+            }}
           >
-            <motion.h2 
-              className="text-3xl md:text-5xl font-bold mb-4"
-              animate={{ 
-                color: darkMode ? 
-                  ["#ffffff", "#a2aaad", "#ffffff"] : 
-                  ["#000000", "#6e6e73", "#000000"] 
-              }}
-              transition={{ duration: 8, repeat: Infinity }}
-            >
-              Technical Arsenal
-            </motion.h2>
-            <motion.div
-              className="h-1 w-20 md:w-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto"
-              initial={{ width: 0 }}
-              whileInView={{ width: isMobile ? 80 : 96 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-            />
-          </motion.div>          <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
+            Skills & Expertise
+          </motion.h2>
+          
+          <motion.div 
+            className="grid gap-16"
+            variants={fadeInUp}
           >
-            {Object.entries(skills).map(([category, items], index) => (
-              <motion.div
-                key={category}
-                className={`rounded-2xl p-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg hover:shadow-xl transition-shadow duration-300`}
+            {Object.values(skills).map((category, index) => (
+              <motion.div 
+                key={category.title}
+                className="relative"
                 variants={fadeInUp}
-                whileHover={{
-                  y: -5,
-                  transition: { duration: 0.2 }
-                }}
-                initial="rest"
-                animate="rest"
-                viewport={{ once: true }}
               >
-                <h3 className="text-lg md:text-xl font-semibold mb-4 capitalize">
-                  {category}
+                <h3 className="text-2xl font-semibold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
+                  {category.title}
                 </h3>
-                <div className="flex flex-wrap gap-2">
-                  {items.map(skill => (
-                    <motion.span
-                      key={skill}
-                      className={`px-3 py-1.5 rounded-full text-sm font-medium ${
-                        darkMode ? 'bg-gray-700 text-blue-300' : 'bg-gray-100 text-blue-600'
-                      }`}
-                      whileHover={{ 
-                        scale: 1.05,
-                        y: -2,
-                        transition: buttonSpring
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {category.items.map((skill, skillIndex) => (
+                    <motion.div
+                      key={skill.name}
+                      className={`px-4 py-3 rounded-xl ${
+                        darkMode 
+                          ? 'bg-gray-800/30 backdrop-blur-sm border border-gray-700/30 hover:border-blue-500/50' 
+                          : 'bg-white/80 backdrop-blur-sm border border-gray-200/50 hover:border-blue-500/50'
+                      } shadow-lg hover:shadow-blue-500/10 transition-all duration-300`}
+                      variants={{
+                        hidden: { 
+                          opacity: 0,
+                          y: 20,
+                          scale: 0.95
+                        },
+                        visible: { 
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                          transition: {
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 20,
+                            delay: skillIndex * 0.1
+                          }
+                        }
                       }}
+                      whileHover={{
+                        y: -5,
+                        scale: 1.02,
+                        transition: {
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 10
+                        }
+                      }}
+                      whileTap={{ scale: 0.98 }}
                     >
-                      {skill}
-                    </motion.span>
+                      <div className="flex items-center justify-center h-full">
+                        <span className="font-medium text-center">
+                          {skill.name}
+                        </span>
+                      </div>
+                    </motion.div>
                   ))}
                 </div>
               </motion.div>
             ))}
           </motion.div>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
       {/* Projects Section with enhanced mobile experience */}
       <section id="projects" className="py-16 md:py-24">
