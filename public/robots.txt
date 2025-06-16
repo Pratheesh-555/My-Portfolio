@@ -1,0 +1,4 @@
+User-agent: *
+Allow: *
+
+Sitemap: https://pratheesh-portfolio.netlify.app/sitemap.xml
