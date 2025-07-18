@@ -725,124 +725,57 @@ const skills = [
           </motion.div>
         </div>
       </section>
-
-      {/* Skills Section */}      <motion.section
-        id="skills"
-        className="py-20 px-4 md:px-8 lg:px-16"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={staggerContainer}
-      >
-        <motion.div className="max-w-6xl mx-auto">
-          <motion.h2 
-            className="text-4xl font-bold text-center mb-16"
-            variants={fadeInUp}
-            style={{
-              backgroundImage: darkMode ? 
-                "linear-gradient(90deg, #fff, #6e6e73, #fff, #fff, #6e6e73, #fff)" : 
-                "linear-gradient(90deg, #1d1d1f, #6e6e73, #1d1d1f, #1d1d1f, #6e6e73, #1d1d1f)",
-              WebkitBackgroundClip: "text",
-              backgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundSize: "200% 100%"
-            }}
-            animate={{ 
-              backgroundPosition: ["0% center", "200% center"]
-            }}
-            transition={{ 
-              duration: 15, 
-              ease: "linear", 
-              repeat: Infinity
-            }}
-          >
-            Skills & Expertise
-          </motion.h2>
-            <motion.div 
-            className="grid gap-16"
-            variants={fadeInUp}
-          >
-            {skills.map((category, index) => (
-              <motion.div 
-                key={category.title}
-                className="relative"
-                variants={fadeInUp}
+<motion.section
+  id="skills"
+  className="py-20 px-4 md:px-8 lg:px-16"
+>
+  <motion.div className="max-w-6xl mx-auto">
+    <motion.h2 
+      className="text-4xl font-bold text-center mb-16"
+      style={{
+        backgroundImage: darkMode ? 
+          "linear-gradient(90deg, #fff, #6e6e73, #fff, #fff, #6e6e73, #fff)" : 
+          "linear-gradient(90deg, #1d1d1f, #6e6e73, #1d1d1f, #1d1d1f, #6e6e73, #1d1d1f)",
+        WebkitBackgroundClip: "text",
+        backgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        backgroundSize: "200% 100%"
+      }}
+    >
+      Skills & Expertise
+    </motion.h2>
+    <div className="grid gap-16">
+      {skills.map((category) => (
+        <div 
+          key={category.title}
+          className="relative"
+        >
+          <h3 className="text-2xl font-semibold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
+            {category.title}
+          </h3>
+          <div className="flex flex-wrap justify-center gap-6">
+            {category.items.map((skill) => (
+              <div
+                key={skill.name}
+                className={`flex-none p-4 rounded-lg 
+                  ${darkMode 
+                    ? 'bg-gray-800/30 border border-gray-700/20' 
+                    : 'bg-white/90 border border-gray-200/30'
+                  } shadow-lg min-w-[160px] text-center`}
               >
-                <h3 className="text-2xl font-semibold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
-                  {category.title}
-                </h3>
-                <div className="relative overflow-hidden">                  <motion.div 
-                    className="flex space-x-6"
-                    animate={{
-                      x: [0, -100 * category.items.length * 2],
-                    }}
-                    transition={{
-                      duration: category.items.length * 8, // Slower, smoother animation
-                      ease: "linear",
-                      repeat: Infinity,
-                      repeatType: "loop"
-                    }}
-                    whileHover={{ 
-                      animationPlayState: "paused" 
-                    }}
-                  >
-                    {/* Original items */}                    {[...category.items, ...category.items].map((skill, skillIndex) => (
-                      <motion.div
-                        key={`${skill.name}-${skillIndex}`}
-                        className={`flex-none p-4 rounded-2xl transform group 
-                          ${darkMode 
-                            ? 'bg-gray-800/30 backdrop-blur-sm border border-gray-700/20' 
-                            : 'bg-white/90 backdrop-blur-sm border border-gray-200/30'
-                          } shadow-lg min-w-[160px] relative overflow-hidden`}
-                        whileHover={{
-                          y: -8,
-                          scale: 1.05,
-                          transition: {
-                            type: "spring",
-                            stiffness: 400,
-                            damping: 10
-                          }
-                        }}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{
-                          opacity: 1,
-                          y: 0,
-                          transition: {
-                            duration: 0.4,
-                            delay: skillIndex * 0.1
-                          }
-                        }}
-                      >
-                        <div className="relative z-20 flex flex-col items-center justify-center min-h-[80px]">
-                          <span className={`font-medium text-lg text-center whitespace-nowrap transition-colors duration-300 ${
-                            darkMode 
-                              ? 'text-gray-200 group-hover:text-white' 
-                              : 'text-gray-800 group-hover:text-black'
-                          }`}>
-                            {skill.name}
-                          </span>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </motion.div>                  {/* Add gradient overlays for smooth fade effect */}
-                  <div className={`absolute left-0 top-0 bottom-0 w-32 z-30 pointer-events-none
-                    ${darkMode 
-                      ? 'bg-gradient-to-r from-black via-black/80 to-transparent' 
-                      : 'bg-gradient-to-r from-white via-white/90 to-transparent'
-                    }`} 
-                  />
-                  <div className={`absolute right-0 top-0 bottom-0 w-32 z-30 pointer-events-none
-                    ${darkMode 
-                      ? 'bg-gradient-to-l from-black via-black/80 to-transparent' 
-                      : 'bg-gradient-to-l from-white via-white/90 to-transparent'
-                    }`} 
-                  />
-                </div>
-              </motion.div>
+                <span className={`font-medium text-lg ${
+                  darkMode ? 'text-gray-200' : 'text-gray-800'
+                }`}>
+                  {skill.name}
+                </span>
+              </div>
             ))}
-          </motion.div>
-        </motion.div>
-      </motion.section>
+          </div>
+        </div>
+      ))}
+    </div>
+  </motion.div>
+</motion.section>
 
       {/* Projects Section with enhanced mobile experience */}
       <section id="projects" className="py-16 md:py-24">
