@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useAnimation, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
-import resumePDF from './NetMed_Resume_PK.pdf';
+
+import AdminPanel from './components/AdminPanel';
+import { usePortfolioData } from './hooks/usePortfolioData';
 
 const navItems = ["Home", "Skills", "Projects", "Achievements", "Contact"];
 
@@ -50,6 +52,16 @@ const ImagePopup = ({ image, onClose }) => {
 };
 
 export default function UltraModernPortfolio() {
+  // Check if we should show admin panel
+  const isAdminRoute = window.location.pathname === '/admin' || window.location.hash === '#admin';
+  
+  if (isAdminRoute) {
+    return <AdminPanel />;
+  }
+
+  // Load portfolio data
+  const { data: portfolioData } = usePortfolioData();
+
   // State hooks
   const [darkMode, setDarkMode] = useState(true);
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -325,55 +337,11 @@ export default function UltraModernPortfolio() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);  }, []);
 
-const skills = [
-    {
-      title: "Programming Languages",
-      items: [
-        { name: "Python" },
-        { name: "Java" },
-        { name: "C++" },
-        { name: "C" }
-      ]
-    },
-    {
-      title: "Web Technologies",
-      items: [
-        { name: "HTML" },
-        { name: "CSS" },
-        { name: "JavaScript" },
-        { name: "React.js" },
-        { name: "Express.js" },
-        { name: "Node.js" }
-      ]
-    },
-    {
-      title: "Databases",
-      items: [
-        { name: "MongoDB" },
-        { name: "MySQL" },
-        { name: "PostgreSQL" }
-      ]
-    }
-  ];
-
-  const projects = [
-    {
-      title: "Mental Wellness AI",
-      description: "AI-powered mental wellness support platform with real-time analysis",
-      tech: "React · Node.js · AI · TensorFlow",
-      link: "https://mental-wellness-xi.vercel.app/",
-      image: "https://img.freepik.com/free-vector/mental-health-awareness-concept_23-2148514654.jpg",
-      requiresAuth: true
-    },
-    {
-      title: "AttendeAze",
-      description: "QR-based attendance management system",
-      tech: "React · Node.js · QR Technology",
-      link: "https://attendeaze.netlify.app/",
-      image: "https://img.freepik.com/free-vector/qr-code-concept-illustration_114360-5853.jpg",
-      requiresAuth: true
-    }
-  ];
+  // Get data from portfolio JSON or use fallback
+  const skills = portfolioData?.skills || [];
+  const projects = portfolioData?.projects || [];
+  const achievements = portfolioData?.achievements || [];
+  const personalInfo = portfolioData?.personalInfo || {};
 
   const handleProjectClick = (project) => {
     if (project.requiresAuth && !isAuthenticated) {
@@ -393,31 +361,12 @@ const skills = [
     }
   };
 
-  const achievements = [
-    {
-      title: "DAKSH AI Hackathon 2nd Place",
-      year: "2025",
-      description: "Led a team of 4 to develop an AI-powered healthcare solution, securing 2nd place among 200+ teams.",
-      image: "/daksh2025.png",
-      thumbnailImage: "/daksh2025.png",
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-        </svg>
-      )
-    },    {
-      title: "LeetCode 50 Days Badge",
-      year: "2024",
-      description: "Achieved the LeetCode 50 Days badge for consistently solving coding problems daily, demonstrating dedication to continuous learning and algorithmic problem-solving.",
-      image: "/lc50.png",
-      thumbnailImage: "/lc50.png",
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-        </svg>
-      )
-    }
-  ];
+  // Achievement icon component
+  const AchievementIcon = () => (
+    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+    </svg>
+  );
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
@@ -640,8 +589,8 @@ const skills = [
               
               {/* Photo container */}              <div className="absolute inset-[3px] rounded-full overflow-hidden bg-gradient-to-br from-gray-900 to-black">
                 <img
-                  src="/profile.jpg"
-                  alt="Pratheesh Krishnan"
+                  src={personalInfo.profileImage || "/profile.jpg"}
+                  alt={personalInfo.name || "Pratheesh Krishnan"}
                   className="w-full h-full object-cover rounded-full"
                 />
               </div>
@@ -664,7 +613,7 @@ const skills = [
                 backgroundSize: "200% 100%"
               }}
             >
-              Hi, I'm Pratheesh Krishnan
+              Hi, I'm {personalInfo.name || 'Pratheesh Krishnan'}
             </motion.h1>
             
             <motion.div
@@ -679,10 +628,10 @@ const skills = [
               className="text-xl md:text-2xl max-w-2xl mb-12"
               variants={fadeInUp}
             >
-              B.Tech Computer Science Student at SASTRA University
+              {personalInfo.title || 'B.Tech Computer Science Student at SASTRA University'}
             </motion.p>            <motion.div className="flex flex-wrap gap-4 justify-center">
               <motion.a
-                href="https://github.com/Pratheesh-555"
+                href={personalInfo.github || "https://github.com/Pratheesh-555"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 group
@@ -696,7 +645,7 @@ const skills = [
                 GitHub
               </motion.a>
               <motion.a
-                href="https://www.linkedin.com/in/pratheesh-krishnan-30b08a282"
+                href={personalInfo.linkedin || "https://www.linkedin.com/in/pratheesh-krishnan-30b08a282"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3 rounded-full font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all flex items-center gap-2 group"
@@ -709,8 +658,8 @@ const skills = [
                 LinkedIn
               </motion.a>
               <motion.a
-                href={resumePDF}
-                download="Pratheesh_Krishnan_Resume.pdf"
+                href={personalInfo.resumeFile || "/Resume.pdf"}
+                download="Resume.pdf"
                 className={`px-6 py-3 rounded-full font-medium transition-all flex items-center gap-2 group
                 ${darkMode ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'}`}
                 whileHover={{ scale: 1.05 }}
@@ -961,7 +910,7 @@ const skills = [
                     <div className={`h-12 w-12 flex items-center justify-center rounded-xl ${
                       darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'
                     }`}>
-                      {achievement.icon}
+                      {achievement.icon || <AchievementIcon />}
                     </div>
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold mb-1">{achievement.title}</h3>
@@ -1041,7 +990,7 @@ const skills = [
             </motion.p>
 
             <motion.a
-              href="mailto:pratheeshkrishnan595@gmail.com"
+              href={`mailto:${personalInfo.email || 'pratheeshkrishnan595@gmail.com'}`}
               className={`inline-block px-8 py-4 rounded-full text-lg font-medium 
               ${darkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800'}
               transition-all shadow-lg`}

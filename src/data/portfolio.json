@@ -1,0 +1,77 @@
+{
+  "personalInfo": {
+    "name": "Pratheesh Krishnan",
+    "title": "B.Tech Computer Science Student at SASTRA University",
+    "email": "pratheeshkrishnan595@gmail.com",
+    "github": "https://github.com/Pratheesh-555",
+    "linkedin": "https://www.linkedin.com/in/pratheesh-krishnan-30b08a282",
+    "profileImage": "/profile.jpg",
+    "resumeFile": "/Resume.pdf"
+  },
+  "skills": [
+    {
+      "title": "Programming Languages",
+      "items": [
+        { "name": "Python" },
+        { "name": "Java" },
+        { "name": "C++" },
+        { "name": "C" }
+      ]
+    },
+    {
+      "title": "Web Technologies",
+      "items": [
+        { "name": "HTML" },
+        { "name": "CSS" },
+        { "name": "JavaScript" },
+        { "name": "React.js" },
+        { "name": "Express.js" },
+        { "name": "Node.js" }
+      ]
+    },
+    {
+      "title": "Databases",
+      "items": [
+        { "name": "MongoDB" },
+        { "name": "MySQL" },
+        { "name": "PostgreSQL" }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "title": "Mental Wellness AI",
+      "description": "AI-powered mental wellness support platform with real-time analysis",
+      "tech": "React · Node.js · AI · TensorFlow",
+      "link": "https://mental-wellness-xi.vercel.app/",
+      "image": "https://img.freepik.com/free-vector/mental-health-awareness-concept_23-2148514654.jpg",
+      "requiresAuth": true
+    },
+    {
+      "id": 2,
+      "title": "AttendeAze",
+      "description": "QR-based attendance management system",
+      "tech": "React · Node.js · QR Technology",
+      "link": "https://attendeaze.netlify.app/",
+      "image": "https://img.freepik.com/free-vector/qr-code-concept-illustration_114360-5853.jpg",
+      "requiresAuth": true
+    }
+  ],
+  "achievements": [
+    {
+      "id": 1,
+      "title": "DAKSH AI Hackathon 2nd Place",
+      "year": "2025",
+      "description": "Led a team of 4 to develop an AI-powered healthcare solution, securing 2nd place among 200+ teams.",
+      "image": "/daksh2025.png"
+    },
+    {
+      "id": 2,
+      "title": "LeetCode 50 Days Badge",
+      "year": "2024",
+      "description": "Achieved the LeetCode 50 Days badge for consistently solving coding problems daily, demonstrating dedication to continuous learning and algorithmic problem-solving.",
+      "image": "/lc50.png"
+    }
+  ]
+}
