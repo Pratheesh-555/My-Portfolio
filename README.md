@@ -10,7 +10,7 @@ A personal portfolio built with **React** to showcase my work, skills, and proje
 - **React Router** (Navigation)
 - **TailwindCSS / CSS Modules** (Styling)
 - **Framer Motion** (Animations)
-- **Vite / Create React App** (Build Tool)
+- **Vite / React App** (Build Tool)
 
 ## ✨ Features
 - Responsive design for mobile & desktop
