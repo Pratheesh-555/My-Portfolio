@@ -16,5 +16,5 @@ A personal portfolio built with **React** to showcase my work, skills, and proje
 - Responsive design for mobile & desktop
 - Smooth animations & transitions
 - Project showcase with live links & GitHub repos
-- Contact form with email integration
+- Contact form with email integration and whatsapp number
 - Dark/Light mode toggle
