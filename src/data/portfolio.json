@@ -56,6 +56,15 @@
       "link": "https://attendeaze.netlify.app/",
       "image": "https://img.freepik.com/free-vector/qr-code-concept-illustration_114360-5853.jpg",
       "requiresAuth": true
+    },
+    {
+      "id": 3,
+      "title": "Placedin",
+      "description": "Professional networking and job placement platform",
+      "tech": "React · Node.js · MongoDB",
+      "link": "https://placedin.netlify.app/",
+      "image": "https://img.freepik.com/free-vector/job-search-concept-illustration_114360-8455.jpg",
+      "requiresAuth": true
     }
   ],
   "achievements": [
