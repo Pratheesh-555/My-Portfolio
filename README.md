@@ -18,3 +18,4 @@ A personal portfolio built with **React** to showcase my work, skills, and proje
 - Project showcase with live links & GitHub repos
 - Contact form with email integration and whatsapp number
 - Dark/Light mode toggle
+copyrights @pratheeshkrishnan595
