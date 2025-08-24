@@ -1,6 +1,7 @@
 # My Portfolio
 
-A personal portfolio built with **React** to showcase my work, skills, and projects.
+
+# A personal portfolio built with **React** to showcase my work, skills, and projects.
 
 ## 📌 Live Demo
 [Visit Portfolio](https://pratheeshkrishnan.netlify.app)
