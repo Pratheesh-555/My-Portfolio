@@ -2,7 +2,7 @@
 
 A personal portfolio built with **React** to showcase my work, skills, and projects.
 
-#📌 Live Demo
+##📌 Live Demo
 [Visit Portfolio](https://pratheeshkrishnan.netlify.app)
 
 ## 🛠 Tech Stack
