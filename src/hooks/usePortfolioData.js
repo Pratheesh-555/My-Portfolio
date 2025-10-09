@@ -37,11 +37,7 @@ export const usePortfolioData = () => {
   useEffect(() => {
     loadData();
     
-    // Only poll for updates in development mode
-    if (import.meta.env.DEV) {
-      const interval = setInterval(loadData, 5000);
-      return () => clearInterval(interval);
-    }
+    // Removed polling - only load once to prevent constant reloading
   }, []);
 
   return {
