@@ -43,7 +43,7 @@ const SkillsSection = ({ skills }) => {
   const [selectedCategory, setSelectedCategory] = useState(0);
 
   return (
-    <section id="skills" className="relative py-20 px-4 overflow-hidden">
+    <section id="skills" className="relative py-12 sm:py-20 px-4 overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
@@ -51,10 +51,10 @@ const SkillsSection = ({ skills }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
           <motion.h2
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -66,7 +66,7 @@ const SkillsSection = ({ skills }) => {
             </span>
           </motion.h2>
           <motion.p
-            className="text-gray-400 text-lg max-w-2xl mx-auto"
+            className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -78,7 +78,7 @@ const SkillsSection = ({ skills }) => {
 
         {/* Category Tabs */}
         <motion.div
-          className="flex flex-wrap justify-center gap-3 mb-12"
+          className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -88,7 +88,7 @@ const SkillsSection = ({ skills }) => {
             <motion.button
               key={index}
               onClick={() => setSelectedCategory(index)}
-              className={`px-6 py-3 rounded-full font-semibold transition-all ${
+              className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold text-sm sm:text-base transition-all ${
                 selectedCategory === index
                   ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg shadow-blue-500/50'
                   : 'bg-white/5 backdrop-blur-sm border border-white/10 text-gray-400 hover:text-white hover:bg-white/10'
@@ -108,7 +108,7 @@ const SkillsSection = ({ skills }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex flex-wrap justify-center gap-3 md:gap-4 max-w-5xl mx-auto"
+            className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 max-w-5xl mx-auto"
           >
             {skills[selectedCategory].items.map((skill, index) => {
               const Icon = iconMap[skill.name] || FaDatabase;

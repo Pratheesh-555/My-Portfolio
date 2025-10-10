@@ -118,9 +118,9 @@ const Navigation = () => {
 
   return (
     <>
-      {/* TOP CENTER Navigation - Smooth & Professional */}
+      {/* TOP CENTER Navigation - Mobile Optimized */}
       <motion.nav
-        className="fixed top-6 left-1/2 -translate-x-1/2 z-50"
+        className="fixed top-3 sm:top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-auto max-w-2xl"
         initial={{ y: -100, opacity: 0 }}
         animate={{ 
           y: isVisible ? 0 : -100, 
@@ -130,10 +130,10 @@ const Navigation = () => {
         onMouseEnter={() => setIsVisible(true)}
       >
         <motion.div
-          className="px-4 py-3 rounded-full backdrop-blur-2xl bg-black/40 border border-white/10 shadow-2xl"
+          className="px-2 sm:px-4 py-2 sm:py-3 rounded-full backdrop-blur-2xl bg-black/60 sm:bg-black/40 border border-white/20 sm:border-white/10 shadow-2xl"
           whileHover={{ boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)' }}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between sm:gap-2">
             {navItems.map((item, index) => {
               const Icon = item.icon;
               const isActive = activeSection === item.id;
@@ -142,7 +142,7 @@ const Navigation = () => {
                 <motion.button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="relative px-5 py-2.5 rounded-full font-medium text-sm transition-all group"
+                  className="relative px-2 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-xs sm:text-sm transition-all group flex-1 sm:flex-initial"
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.08 }}
@@ -152,18 +152,18 @@ const Navigation = () => {
                   {/* Active background */}
                   {isActive && (
                     <motion.div
-                      className="absolute inset-0 rounded-full bg-white/20"
+                      className="absolute inset-0 rounded-full bg-white/20 sm:bg-white/20"
                       layoutId="nav-active"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
 
                   {/* Content */}
-                  <span className={`relative z-10 flex items-center gap-2 transition-colors ${
+                  <span className={`relative z-10 flex flex-col sm:flex-row items-center gap-0.5 sm:gap-2 transition-colors ${
                     isActive ? 'text-white' : 'text-gray-400 group-hover:text-white'
                   }`}>
-                    <Icon className="text-base" />
-                    <span className="hidden sm:inline">{item.label}</span>
+                    <Icon className="text-sm sm:text-base" />
+                    <span className="text-[10px] sm:text-sm hidden xs:inline">{item.label}</span>
                   </span>
                 </motion.button>
               );
@@ -174,7 +174,7 @@ const Navigation = () => {
 
       {/* Scroll Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 origin-left z-[60]"
+        className="fixed top-0 left-0 right-0 h-1 sm:h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 origin-left z-[60]"
         style={{ scaleX: scrollProgress }}
       />
     </>

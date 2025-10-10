@@ -1,11 +1,15 @@
 import { motion } from 'framer-motion';
 
 const Loader = () => {
+  // Reduce star count on mobile for better performance
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const starCount = isMobile ? 25 : 50;
+  
   return (
     <div className="min-h-screen bg-[#0a0a14] flex items-center justify-center relative overflow-hidden">
       {/* Animated background stars */}
       <div className="absolute inset-0">
-        {[...Array(50)].map((_, i) => (
+        {[...Array(starCount)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-1 h-1 bg-white rounded-full"

@@ -7,7 +7,7 @@ const AchievementsSection = ({ achievements }) => {
   const [selectedAchievement, setSelectedAchievement] = useState(null);
 
   return (
-    <section id="achievements" className="relative py-20 px-4 overflow-hidden">
+    <section id="achievements" className="relative py-12 sm:py-20 px-4 overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
@@ -15,7 +15,7 @@ const AchievementsSection = ({ achievements }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
           {/* Section badge */}
           <motion.div
@@ -32,7 +32,7 @@ const AchievementsSection = ({ achievements }) => {
 
           {/* Title */}
           <motion.h2
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -46,7 +46,7 @@ const AchievementsSection = ({ achievements }) => {
 
           {/* Description */}
           <motion.p
-            className="text-gray-400 text-lg max-w-2xl mx-auto"
+            className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}

@@ -26,12 +26,12 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative py-12 px-4 border-t border-white/10 overflow-hidden">
+    <footer className="relative py-8 sm:py-12 px-4 border-t border-white/10 overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="text-center space-y-6">
+        <div className="text-center space-y-4 sm:space-y-6">
           {/* Logo/Brand */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -39,7 +39,7 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+            <h3 className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
               Portfolio
             </h3>
           </motion.div>
@@ -87,7 +87,7 @@ const Footer = () => {
           {/* Scroll to top button */}
           <motion.button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all group"
+            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all group text-sm sm:text-base"
             whileHover={{ scale: 1.02, y: -3 }}
             whileTap={{ scale: 0.98 }}
             initial={{ opacity: 0, y: 20 }}

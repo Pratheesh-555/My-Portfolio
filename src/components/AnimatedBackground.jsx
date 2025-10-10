@@ -115,12 +115,14 @@ const AnimatedBackground = () => {
       }
     }
 
-    // Initialize stars
-    const starCount = window.innerWidth < 768 ? 150 : 250;
+    // Initialize stars - reduce count on mobile for better performance
+    const isMobile = window.innerWidth < 768;
+    const starCount = isMobile ? 100 : 250;
     starsRef.current = Array.from({ length: starCount }, () => new Star());
     
-    // Initialize shooting stars
-    shootingStarsRef.current = Array.from({ length: 3 }, () => new ShootingStar());
+    // Initialize shooting stars - fewer on mobile
+    const shootingStarCount = isMobile ? 2 : 3;
+    shootingStarsRef.current = Array.from({ length: shootingStarCount }, () => new ShootingStar());
 
     // Animation loop
     const animate = () => {

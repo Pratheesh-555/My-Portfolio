@@ -6,22 +6,22 @@ const HeroSection = ({ personalInfo }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-4">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-16 sm:py-20 px-4">
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto w-full">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
           {/* Left side - Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
           >
             {/* Greeting - simplified */}
             <motion.div
               className="inline-block"
             >
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-lg md:text-xl font-medium">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 text-base sm:text-lg md:text-xl font-medium">
                 👋 Hello, I'm
               </span>
             </motion.div>
@@ -29,7 +29,7 @@ const HeroSection = ({ personalInfo }) => {
             {/* Name with animated shimmer effect */}
             <div className="relative">
               <motion.h1
-                className="relative text-5xl md:text-7xl lg:text-8xl font-bold mb-4 text-white"
+                className="relative text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-3 sm:mb-4 text-white"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -89,7 +89,7 @@ const HeroSection = ({ personalInfo }) => {
 
             {/* CTA Buttons */}
             <motion.div
-              className="flex flex-wrap gap-4 pt-4"
+              className="flex flex-col xs:flex-row flex-wrap gap-3 sm:gap-4 pt-2 sm:pt-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
@@ -97,11 +97,11 @@ const HeroSection = ({ personalInfo }) => {
               {/* Contact Button */}
               <motion.a
                 href={`mailto:${personalInfo?.email}`}
-                className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full font-semibold text-white overflow-hidden"
+                className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full font-semibold text-white overflow-hidden text-center text-sm sm:text-base"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <span className="relative z-10 flex items-center gap-2">
+                <span className="relative z-10 flex items-center justify-center gap-2">
                   <FaEnvelope /> Get In Touch
                 </span>
               </motion.a>
@@ -110,11 +110,11 @@ const HeroSection = ({ personalInfo }) => {
               <motion.a
                 href={personalInfo?.resumeFile}
                 download
-                className="group px-8 py-4 border-2 border-blue-500 rounded-full font-semibold text-white hover:bg-blue-500/10 transition-all backdrop-blur-sm"
+                className="group px-6 sm:px-8 py-3 sm:py-4 border-2 border-blue-500 rounded-full font-semibold text-white hover:bg-blue-500/10 transition-all backdrop-blur-sm text-center text-sm sm:text-base"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <span className="flex items-center gap-2">
+                <span className="flex items-center justify-center gap-2">
                   <FaFileDownload /> Resume
                 </span>
               </motion.a>
@@ -122,7 +122,7 @@ const HeroSection = ({ personalInfo }) => {
 
             {/* Social Links */}
             <motion.div
-              className="flex gap-4 pt-4"
+              className="flex gap-3 sm:gap-4 pt-2 sm:pt-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.6 }}
@@ -168,7 +168,7 @@ const HeroSection = ({ personalInfo }) => {
 
           {/* Right side - Clean Profile Card */}
           <motion.div
-            className="relative flex justify-center items-center"
+            className="relative flex justify-center items-center mt-8 lg:mt-0"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -176,7 +176,7 @@ const HeroSection = ({ personalInfo }) => {
             <motion.div className="relative w-full max-w-md">
               {/* Glassmorphism Card */}
               <motion.div
-                className="relative rounded-3xl overflow-hidden backdrop-blur-xl bg-white/5 border border-white/20 p-8 shadow-2xl"
+                className="relative rounded-3xl overflow-hidden backdrop-blur-xl bg-white/5 border border-white/20 p-6 sm:p-8 shadow-2xl"
                 onHoverStart={() => setIsHovered(true)}
                 onHoverEnd={() => setIsHovered(false)}
                 whileHover={{ scale: 1.02 }}
@@ -189,7 +189,7 @@ const HeroSection = ({ personalInfo }) => {
                 <div className="relative z-10">
                   {/* Profile Image */}
                   <motion.div
-                    className="relative w-48 h-48 mx-auto mb-6"
+                    className="relative w-40 h-40 sm:w-48 sm:h-48 mx-auto mb-4 sm:mb-6"
                   >
                     {/* Simple rotating ring */}
                     <motion.div
@@ -209,7 +209,7 @@ const HeroSection = ({ personalInfo }) => {
                   </motion.div>
 
                   {/* Stats */}
-                  <div className="grid grid-cols-3 gap-4 mt-8">
+                  <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-6 sm:mt-8">
                     {[
                       { label: 'Projects', value: '3+' },
                       { label: 'Experience', value: '1yr+' },
@@ -217,15 +217,15 @@ const HeroSection = ({ personalInfo }) => {
                     ].map((stat, index) => (
                       <motion.div
                         key={index}
-                        className="text-center p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors"
+                        className="text-center p-2 sm:p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6 + index * 0.1 }}
                       >
-                        <div className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                        <div className="text-lg sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
                           {stat.value}
                         </div>
-                        <div className="text-xs text-gray-400 mt-1">{stat.label}</div>
+                        <div className="text-[10px] sm:text-xs text-gray-400 mt-1">{stat.label}</div>
                       </motion.div>
                     ))}
                   </div>
