@@ -12,6 +12,13 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  scroll-padding-bottom: 80px;
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-bottom: 100px;
+  }
 }
 
 body {

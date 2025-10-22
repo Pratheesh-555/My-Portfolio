@@ -48,8 +48,8 @@ function App() {
       {/* Navigation */}
       <Navigation />
 
-      {/* Main Content */}
-      <main className="relative z-10">
+      {/* Main Content - Add bottom padding for mobile nav */}
+      <main className="relative z-10 pb-20 md:pb-0">
         <HeroSection personalInfo={data.personalInfo} />
         <ProjectsSection projects={data.projects} />
         <SkillsSection skills={data.skills} />
@@ -57,8 +57,10 @@ function App() {
         <ContactSection personalInfo={data.personalInfo} />
       </main>
 
-      {/* Footer */}
-      <Footer personalInfo={data.personalInfo} />
+      {/* Footer - Add bottom padding for mobile nav */}
+      <div className="pb-0 md:pb-0">
+        <Footer personalInfo={data.personalInfo} />
+      </div>
     </div>
   );
 }
