@@ -35,6 +35,31 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Performance optimizations */
+img {
+  content-visibility: auto;
+}
+
+/* GPU acceleration for transforms */
+[class*="transform"],
+[class*="transition"],
+[class*="animate"] {
+  will-change: auto;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Custom scrollbar - Unique emerald/teal theme */
 ::-webkit-scrollbar {
   width: 10px;

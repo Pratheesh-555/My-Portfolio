@@ -24,85 +24,81 @@ const Navigation = () => {
   ];
 
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Show navbar when scrolling up, hide when scrolling down
-      if (currentScrollY < lastScrollY || currentScrollY < 100) {
-        setIsVisible(true);
-      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false);
-      }
-      
-      setLastScrollY(currentScrollY);
-      
-      // Show navbar while scrolling, hide after 2 seconds of no scrolling
-      setIsVisible(true);
-      
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-      
-      scrollTimeoutRef.current = setTimeout(() => {
-        if (window.scrollY > 100) {
-          setIsVisible(false);
-        }
-      }, 2000);
-      
-      // Active section detection
-      const sections = navItems.map(item => item.id);
-      const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
-      
-      // If at the very top (first 100px), always set to hero
-      if (scrollPosition < 100) {
-        setActiveSection('hero');
-        return;
-      }
-      
-      // Find which section is currently most visible
-      let maxVisibility = 0;
-      let mostVisibleSection = 'hero';
-      
-      for (const sectionId of sections) {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          const rect = element.getBoundingClientRect();
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
           
-          // Calculate how much of the section is visible
-          const visibleTop = Math.max(0, rect.top);
-          const visibleBottom = Math.min(windowHeight, rect.bottom);
-          const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-          
-          // Calculate visibility ratio
-          const sectionHeight = rect.height;
-          const visibilityRatio = visibleHeight / Math.min(sectionHeight, windowHeight);
-          
-          if (visibilityRatio > maxVisibility) {
-            maxVisibility = visibilityRatio;
-            mostVisibleSection = sectionId;
+          // Show navbar when scrolling up, hide when scrolling down (desktop only)
+          if (window.innerWidth >= 768) {
+            if (currentScrollY < lastScrollY || currentScrollY < 100) {
+              setIsVisible(true);
+            } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+              setIsVisible(false);
+            }
+            
+            // Auto-hide after 2 seconds
+            if (scrollTimeoutRef.current) {
+              clearTimeout(scrollTimeoutRef.current);
+            }
+            
+            scrollTimeoutRef.current = setTimeout(() => {
+              if (window.scrollY > 100) {
+                setIsVisible(false);
+              }
+            }, 2000);
           }
-        }
+          
+          setLastScrollY(currentScrollY);
+          
+          // Simple active section detection - check only if near top
+          if (currentScrollY < 100) {
+            setActiveSection('hero');
+          } else {
+            // Simplified detection - check which section center is closest to viewport center
+            const sections = navItems.map(item => item.id);
+            const viewportCenter = window.innerHeight / 2;
+            let closestSection = 'hero';
+            let closestDistance = Infinity;
+            
+            for (const sectionId of sections) {
+              const element = document.getElementById(sectionId);
+              if (element) {
+                const rect = element.getBoundingClientRect();
+                const sectionCenter = rect.top + rect.height / 2;
+                const distance = Math.abs(sectionCenter - viewportCenter);
+                
+                if (distance < closestDistance) {
+                  closestDistance = distance;
+                  closestSection = sectionId;
+                }
+              }
+            }
+            
+            setActiveSection(closestSection);
+          }
+          
+          ticking = false;
+        });
+        
+        ticking = true;
       }
-      
-      setActiveSection(mostVisibleSection);
     };
 
-    // Run immediately on mount and scroll
+    // Initial check
     handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
     
-    // Also check on resize
-    window.addEventListener('resize', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
-  }, [lastScrollY]);
+  }, [lastScrollY, navItems]);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
