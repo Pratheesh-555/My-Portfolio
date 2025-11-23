@@ -115,56 +115,45 @@ const Navigation = () => {
   return (
     <>
       {/* Mobile Bottom Navigation (visible on mobile only) */}
-      <motion.nav
-        className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="backdrop-blur-2xl bg-black/80 border-t border-white/20 px-2 py-3 shadow-2xl">
-          <div className="flex items-center justify-around max-w-lg mx-auto">
-            {navItems.map((item, index) => {
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden safe-area-bottom">
+        <div className="backdrop-blur-xl bg-black/90 border-t border-white/20 px-1 py-2 shadow-2xl">
+          <div className="flex items-center justify-around max-w-md mx-auto">
+            {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeSection === item.id;
 
               return (
-                <motion.button
+                <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="relative flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all min-w-[60px]"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.08 }}
-                  whileTap={{ scale: 0.95 }}
+                  className={`relative flex flex-col items-center gap-1 px-2 py-1.5 rounded-lg transition-all min-w-[56px] ${
+                    isActive ? 'scale-105' : 'active:scale-95'
+                  }`}
                 >
                   {/* Active background */}
                   {isActive && (
-                    <motion.div
-                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20"
-                      layoutId="mobile-nav-active"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
+                    <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/30 to-purple-500/30 animate-pulse" />
                   )}
 
                   {/* Icon */}
                   <Icon 
-                    className={`relative z-10 text-lg transition-colors ${
+                    className={`relative z-10 text-xl transition-colors ${
                       isActive ? 'text-blue-400' : 'text-gray-400'
                     }`} 
                   />
                   
                   {/* Label */}
-                  <span className={`relative z-10 text-[10px] font-medium transition-colors ${
-                    isActive ? 'text-white' : 'text-gray-500'
+                  <span className={`relative z-10 text-[9px] font-medium transition-colors leading-tight ${
+                    isActive ? 'text-white font-semibold' : 'text-gray-500'
                   }`}>
                     {item.label}
                   </span>
-                </motion.button>
+                </button>
               );
             })}
           </div>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Desktop Top Navigation (visible on tablet and up) */}
       <motion.nav
@@ -177,53 +166,46 @@ const Navigation = () => {
         transition={{ duration: 0.3, ease: 'easeInOut' }}
         onMouseEnter={() => setIsVisible(true)}
       >
-        <motion.div
-          className="px-4 py-3 rounded-full backdrop-blur-2xl bg-black/40 border border-white/10 shadow-2xl"
-          whileHover={{ boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)' }}
-        >
+        <div className="px-4 py-3 rounded-full backdrop-blur-2xl bg-black/40 border border-white/10 shadow-2xl">
           <div className="flex items-center gap-2">
-            {navItems.map((item, index) => {
+            {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeSection === item.id;
 
               return (
-                <motion.button
+                <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="relative px-5 py-2.5 rounded-full font-medium text-sm transition-all group"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.08 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className={`relative px-5 py-2.5 rounded-full font-medium text-sm transition-all ${
+                    isActive ? '' : 'hover:scale-105'
+                  } active:scale-95`}
                 >
                   {/* Active background */}
                   {isActive && (
-                    <motion.div
-                      className="absolute inset-0 rounded-full bg-white/20"
-                      layoutId="desktop-nav-active"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
+                    <div className="absolute inset-0 rounded-full bg-white/20" />
                   )}
 
                   {/* Content */}
                   <span className={`relative z-10 flex items-center gap-2 transition-colors ${
-                    isActive ? 'text-white' : 'text-gray-400 group-hover:text-white'
+                    isActive ? 'text-white' : 'text-gray-400 hover:text-white'
                   }`}>
                     <Icon className="text-base" />
                     <span>{item.label}</span>
                   </span>
-                </motion.button>
+                </button>
               );
             })}
           </div>
-        </motion.div>
+        </div>
       </motion.nav>
 
       {/* Scroll Progress Bar */}
-      <motion.div
+      <div
         className="fixed top-0 left-0 right-0 h-1 md:h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 origin-left z-[60]"
-        style={{ scaleX: scrollProgress }}
+        style={{ 
+          transform: `scaleX(${scrollProgress.get()})`,
+          transformOrigin: 'left'
+        }}
       />
     </>
   );
